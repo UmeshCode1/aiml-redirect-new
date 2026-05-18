@@ -3,33 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Initializing Secure Connection...</title>
-    <!-- Favicon -->
+    <title>AIML | Secure Portal</title>
     <link rel="icon" href="logo.png" type="image/png">
-    
-    <!-- Fallback Redirect -->
-    <meta http-equiv="refresh" content="4; url=https://tally.so/r/RGbkdj">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Removed meta refresh to handle redirect precisely via JS -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --primary: #00ffcc;
-            --secondary: #7b2cbf;
-            --dark: #050505;
-            --glow: rgba(0, 255, 204, 0.4);
+            --bg: #030712;
+            --primary: #38bdf8;
+            --accent: #818cf8;
+            --danger: #fb7185;
+            --glow: rgba(56, 189, 248, 0.5);
+            --card-bg: rgba(15, 23, 42, 0.6);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            user-select: none;
         }
 
         body {
-            font-family: 'Space Grotesk', sans-serif;
-            min-height: 100vh;
-            background-color: var(--dark);
+            background-color: var(--bg);
             color: #fff;
+            font-family: 'Rajdhani', sans-serif;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -37,311 +37,522 @@
             position: relative;
         }
 
-        /* Cybernetic Grid Background */
-        body::before {
-            content: '';
+        /* Canvas Particle Background */
+        #particles {
             position: absolute;
-            top: -50%; left: -50%; right: -50%; bottom: -50%;
-            width: 200%; height: 200%;
-            background: 
-                linear-gradient(rgba(0, 255, 204, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 204, 0.05) 1px, transparent 1px);
-            background-size: 40px 40px;
-            transform: perspective(500px) rotateX(60deg) translateY(-100px) translateZ(-200px);
-            animation: gridMove 20s linear infinite;
+            top: 0; left: 0; width: 100%; height: 100%;
             z-index: 1;
         }
 
-        @keyframes gridMove {
-            0% { transform: perspective(500px) rotateX(60deg) translateY(0) translateZ(-200px); }
-            100% { transform: perspective(500px) rotateX(60deg) translateY(40px) translateZ(-200px); }
-        }
-
-        /* Radial Vignette */
-        .vignette {
+        /* Ambient Glows */
+        .ambient-glow {
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: radial-gradient(circle at center, transparent 20%, var(--dark) 80%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--glow) 0%, transparent 60%);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.15;
             z-index: 2;
+            animation: pulseGlow 4s ease-in-out infinite alternate;
         }
 
-        .hud-container {
+        @keyframes pulseGlow {
+            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.1; }
+            100% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.2; }
+        }
+
+        /* Main UI Container */
+        .hud-wrapper {
             position: relative;
             z-index: 10;
+            width: 100%;
+            max-width: 550px;
+            padding: 2px;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.5), rgba(129, 140, 248, 0.1), rgba(56, 189, 248, 0.5));
+            border-radius: 16px;
+            clip-path: polygon(0 20px, 20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
+            animation: bootUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            transform: translateY(30px);
+            opacity: 0;
+            box-shadow: 0 0 50px rgba(56, 189, 248, 0.2);
+        }
+
+        @keyframes bootUp {
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        .hud-inner {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border-radius: 14px;
+            padding: 3rem 2.5rem;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 2.5rem;
-            width: 100%;
-            max-width: 500px;
-            padding: 3rem;
-            background: rgba(10, 10, 15, 0.6);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(0, 255, 204, 0.1);
-            border-radius: 20px;
-            box-shadow: 
-                0 0 30px rgba(0, 255, 204, 0.05),
-                inset 0 0 20px rgba(0, 255, 204, 0.05);
-            animation: containerEnter 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            transform: scale(0.9);
-            opacity: 0;
-        }
-
-        @keyframes containerEnter {
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        /* HUD Scanner Ring */
-        .scanner-ring {
+            clip-path: polygon(0 18px, 18px 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%);
             position: relative;
-            width: 140px;
-            height: 140px;
+        }
+
+        /* Decorative Corners */
+        .corner {
+            position: absolute;
+            width: 15px; height: 15px;
+            border: 2px solid var(--primary);
+            opacity: 0.7;
+        }
+        .c-tl { top: 20px; left: 20px; border-right: none; border-bottom: none; }
+        .c-tr { top: 20px; right: 20px; border-left: none; border-bottom: none; }
+        .c-bl { bottom: 20px; left: 20px; border-right: none; border-top: none; }
+        .c-br { bottom: 20px; right: 20px; border-left: none; border-top: none; }
+
+        /* Hexagon Logo Container */
+        .hex-container {
+            position: relative;
+            width: 120px;
+            height: 138.56px;
+            margin-bottom: 2rem;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        .scanner-ring::before, .scanner-ring::after {
-            content: '';
+        .hex-border {
             position: absolute;
-            border-radius: 50%;
-        }
-
-        .scanner-ring::before {
             width: 100%;
             height: 100%;
-            border: 2px dashed rgba(0, 255, 204, 0.3);
-            animation: spin 10s linear infinite;
+            background-color: transparent;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            border: 2px solid var(--primary);
+            animation: rotateHex 10s linear infinite;
+            box-sizing: border-box;
+        }
+        
+        .hex-border::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: inherit;
+            border: 2px solid var(--accent);
+            transform: scale(1.1);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            animation: rotateHex 15s linear infinite reverse;
         }
 
-        .scanner-ring::after {
-            width: 120%;
-            height: 120%;
-            border: 1px solid rgba(123, 44, 191, 0.3);
-            border-top-color: var(--secondary);
-            border-bottom-color: var(--primary);
-            animation: spin 4s linear infinite reverse;
-        }
-
-        @keyframes spin {
+        @keyframes rotateHex {
             100% { transform: rotate(360deg); }
         }
 
         .logo {
-            width: 90px;
-            height: 90px;
-            object-fit: contain;
+            width: 75px;
+            height: 75px;
             border-radius: 50%;
-            z-index: 2;
-            filter: drop-shadow(0 0 15px var(--glow));
-            animation: pulse 2s ease-in-out infinite alternate;
+            object-fit: contain;
+            z-index: 5;
+            filter: drop-shadow(0 0 10px var(--primary));
+            animation: heartbeat 2s ease-in-out infinite;
         }
 
-        @keyframes pulse {
-            0% { transform: scale(0.95); filter: drop-shadow(0 0 10px rgba(0,255,204,0.3)); }
-            100% { transform: scale(1.05); filter: drop-shadow(0 0 25px rgba(0,255,204,0.8)); }
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); filter: drop-shadow(0 0 20px var(--primary)); }
         }
 
-        .text-content {
-            text-align: center;
-        }
-
+        /* Typography */
         .title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            background: linear-gradient(90deg, var(--primary), #fff, var(--secondary));
-            background-size: 200% auto;
-            color: transparent;
-            -webkit-background-clip: text;
-            background-clip: text;
-            animation: gradientText 3s linear infinite;
-            margin-bottom: 0.5rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: 4px;
+            margin-bottom: 0.2rem;
+            text-shadow: 0 0 15px var(--glow);
+            position: relative;
         }
 
-        @keyframes gradientText {
-            to { background-position: 200% center; }
+        /* Glitch Effect on Title */
+        .glitch {
+            position: relative;
+        }
+        .glitch::before, .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.8;
+        }
+        .glitch::before {
+            left: 2px;
+            text-shadow: -2px 0 var(--danger);
+            clip: rect(24px, 550px, 90px, 0);
+            animation: glitch-anim 3s infinite linear alternate-reverse;
+        }
+        .glitch::after {
+            left: -2px;
+            text-shadow: -2px 0 var(--primary);
+            clip: rect(85px, 550px, 140px, 0);
+            animation: glitch-anim 2.5s infinite linear alternate-reverse;
         }
 
-        .status {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
-            color: #8892b0;
+        @keyframes glitch-anim {
+            0% { clip: rect(10px, 9999px, 86px, 0); }
+            10% { clip: rect(44px, 9999px, 50px, 0); }
+            20% { clip: rect(78px, 9999px, 10px, 0); }
+            30% { clip: rect(22px, 9999px, 49px, 0); }
+            40% { clip: rect(96px, 9999px, 34px, 0); }
+            50% { clip: rect(48px, 9999px, 2px, 0); }
+            60% { clip: rect(62px, 9999px, 88px, 0); }
+            70% { clip: rect(31px, 9999px, 15px, 0); }
+            80% { clip: rect(9px, 9999px, 55px, 0); }
+            90% { clip: rect(87px, 9999px, 20px, 0); }
+            100% { clip: rect(53px, 9999px, 73px, 0); }
+        }
+
+        .subtitle {
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--primary);
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            letter-spacing: 1px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 8px;
+            gap: 10px;
         }
 
-        .blinking-dot {
-            width: 8px;
-            height: 8px;
-            background-color: var(--primary);
+        .spinner {
+            width: 14px;
+            height: 14px;
+            border: 2px solid transparent;
+            border-top-color: var(--primary);
+            border-left-color: var(--primary);
             border-radius: 50%;
-            box-shadow: 0 0 10px var(--primary);
-            animation: blink 1s infinite;
+            animation: spin 0.8s linear infinite;
         }
 
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        /* High-Tech Progress Bar */
-        .progress-wrapper {
+        /* Terminal Window */
+        .terminal {
             width: 100%;
-            background: rgba(0,0,0,0.5);
-            border: 1px solid rgba(0, 255, 204, 0.2);
-            border-radius: 4px;
-            height: 8px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            height: 80px;
+            text-align: left;
+            margin-bottom: 2rem;
             position: relative;
             overflow: hidden;
         }
 
-        .progress-fill {
+        .terminal::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 2px;
+            background: var(--primary);
+            opacity: 0.5;
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        .terminal-lines {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .line {
+            display: flex;
+            gap: 8px;
+            opacity: 0;
+            transform: translateX(-10px);
+            animation: typeLine 0.1s forwards;
+        }
+
+        .line .prefix { color: var(--primary); }
+        .line .success { color: #34d399; }
+        .line .warning { color: #fbbf24; }
+
+        @keyframes typeLine {
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--accent);
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 6px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 3px;
+            overflow: hidden;
+            border: 1px solid rgba(129, 140, 248, 0.3);
+        }
+
+        .progress-bar {
             height: 100%;
             width: 0%;
-            background: var(--primary);
-            box-shadow: 0 0 20px var(--primary);
-            border-radius: 2px;
-            position: relative;
-            animation: fillProgress 4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            box-shadow: 0 0 10px var(--primary);
+            transition: width 0.1s linear;
         }
 
-        .progress-fill::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
-            transform: translateX(-100%);
-            animation: shimmer 1.5s infinite;
-        }
-
-        @keyframes fillProgress {
-            0% { width: 0%; }
-            100% { width: 100%; }
-        }
-
-        @keyframes shimmer {
-            100% { transform: translateX(100%); }
-        }
-
-        .manual-link {
-            font-family: 'JetBrains Mono', monospace;
+        /* Bypass Button */
+        .btn-bypass {
+            background: transparent;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: #94a3b8;
+            font-family: 'Orbitron', sans-serif;
             font-size: 0.75rem;
-            color: #64748b;
-            text-decoration: none;
+            letter-spacing: 2px;
+            padding: 8px 20px;
+            border-radius: 4px;
+            cursor: pointer;
             transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
             position: relative;
-            padding-bottom: 2px;
-        }
-
-        .manual-link:hover {
-            color: var(--primary);
-            text-shadow: 0 0 8px var(--glow);
-        }
-
-        .manual-link::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 1px;
-            bottom: 0;
-            left: 0;
-            background: var(--primary);
-            transform: scaleX(0);
-            transform-origin: right;
-            transition: transform 0.3s ease;
-        }
-
-        .manual-link:hover::after {
-            transform: scaleX(1);
-            transform-origin: left;
-        }
-        
-        .sys-logs {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            color: rgba(100, 116, 139, 0.5);
-            width: 100%;
-            text-align: left;
-            margin-top: -10px;
-            height: 40px;
             overflow: hidden;
         }
-        
-        .sys-logs p {
-            margin: 2px 0;
-            animation: slideUp 4s forwards;
-            opacity: 0;
+
+        .btn-bypass::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.2), transparent);
+            transition: left 0.5s ease;
         }
-        
-        .sys-logs p:nth-child(1) { animation-delay: 0.5s; }
-        .sys-logs p:nth-child(2) { animation-delay: 1.5s; }
-        .sys-logs p:nth-child(3) { animation-delay: 2.5s; }
-        
-        @keyframes slideUp {
-            0% { transform: translateY(10px); opacity: 0; }
-            10% { transform: translateY(0); opacity: 1; }
-            90% { transform: translateY(0); opacity: 1; }
-            100% { transform: translateY(-10px); opacity: 0; }
+
+        .btn-bypass:hover {
+            color: #fff;
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+            text-shadow: 0 0 5px var(--primary);
+        }
+
+        .btn-bypass:hover::before {
+            left: 100%;
+        }
+
+        /* Scanline Overlay */
+        .scanlines {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1));
+            background-size: 100% 4px;
+            z-index: 999;
+            pointer-events: none;
+            opacity: 0.3;
         }
 
     </style>
 </head>
 <body>
-    <div class="vignette"></div>
-    
-    <div class="hud-container">
-        <div class="scanner-ring">
-            <img src="logo.png" alt="AIML Club Logo" class="logo" onerror="this.src='https://via.placeholder.com/90/050505/00ffcc?text=AIML'">
-        </div>
-        
-        <div class="text-content">
-            <h1 class="title">Handshake Initiated</h1>
-            <div class="status">
-                <div class="blinking-dot"></div>
-                <span id="status-text">Resolving target node...</span>
+    <div id="particles"></div>
+    <div class="ambient-glow"></div>
+    <div class="scanlines"></div>
+
+    <div class="hud-wrapper">
+        <div class="hud-inner">
+            <div class="corner c-tl"></div>
+            <div class="corner c-tr"></div>
+            <div class="corner c-bl"></div>
+            <div class="corner c-br"></div>
+
+            <div class="hex-container">
+                <div class="hex-border"></div>
+                <!-- Inline SVG of a hexagon for exact shape matching if needed, but CSS clip-path works -->
+                <div style="width: 100%; height: 100%; position: absolute; clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); border: 1px solid var(--primary); box-sizing: border-box;"></div>
+                <img src="logo.png" alt="Logo" class="logo" onerror="this.src='https://via.placeholder.com/75/030712/38bdf8?text=AI'">
             </div>
-        </div>
-        
-        <div class="sys-logs">
-            <p>> Connecting to suggestion portal...</p>
-            <p>> Verifying secure token exchange...</p>
-            <p>> Rerouting traffic to destination [200 OK]</p>
-        </div>
 
-        <div class="progress-wrapper">
-            <div class="progress-fill"></div>
-        </div>
+            <h1 class="title glitch" data-text="SYSTEM UPLINK">SYSTEM UPLINK</h1>
+            
+            <div class="subtitle">
+                <div class="spinner"></div>
+                <span id="auth-status">AUTHENTICATING...</span>
+            </div>
 
-        <a href="https://tally.so/r/RGbkdj" class="manual-link">>> FORCE_OVERRIDE: BYPASS_WAIT_TIME</a>
+            <div class="terminal">
+                <div class="terminal-lines" id="term-lines">
+                    <!-- Lines added via JS -->
+                </div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-header">
+                    <span>TRANSFER_RATE: <span id="rate">0</span> MB/s</span>
+                    <span>T-MINUS: <span id="countdown">04.00</span>s</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-bar" id="p-bar"></div>
+                </div>
+            </div>
+
+            <a href="https://tally.so/r/RGbkdj" class="btn-bypass">>> INITIATE_MANUAL_OVERRIDE</a>
+        </div>
     </div>
 
     <script>
-        const statusTexts = [
-            "Resolving target node...",
-            "Establishing secure connection...",
-            "Synchronizing data streams...",
-            "Redirecting..."
-        ];
+        // Particle Background Logic
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        document.getElementById('particles').appendChild(canvas);
         
-        let i = 0;
-        const textElement = document.getElementById('status-text');
+        let width, height, particles = [];
         
-        setInterval(() => {
-            if (i < statusTexts.length - 1) {
-                i++;
-                textElement.innerText = statusTexts[i];
-            }
-        }, 1000);
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        
+        window.addEventListener('resize', resize);
+        resize();
 
-        // Redirect after 4 seconds (aligns with animations)
-        setTimeout(() => {
-            window.location.replace("https://tally.so/r/RGbkdj");
-        }, 4000);
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.radius = Math.random() * 1.5;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if(this.x < 0 || this.x > width) this.vx = -this.vx;
+                if(this.y < 0 || this.y > height) this.vy = -this.vy;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(56, 189, 248, 0.4)';
+                ctx.fill();
+            }
+        }
+
+        for(let i=0; i<70; i++) particles.push(new Particle());
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, width, height);
+            
+            for(let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                
+                for(let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx*dx + dy*dy);
+                    
+                    if(dist < 100) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = `rgba(56, 189, 248, ${0.15 - dist/1000})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // Terminal Typing Logic
+        const logs = [
+            { text: "Resolving DNS for external node...", type: "normal", delay: 400 },
+            { text: "Node found at IP 104.21.x.x", type: "success", delay: 1200 },
+            { text: "Bypassing local firewalls...", type: "warning", delay: 2000 },
+            { text: "Secure handshake complete. Bridging...", type: "success", delay: 2800 }
+        ];
+
+        const termLines = document.getElementById('term-lines');
+        
+        logs.forEach(log => {
+            setTimeout(() => {
+                const line = document.createElement('div');
+                line.className = 'line';
+                
+                const prefix = document.createElement('span');
+                prefix.className = 'prefix';
+                prefix.textContent = '>';
+                
+                const content = document.createElement('span');
+                if(log.type === 'success') content.className = 'success';
+                if(log.type === 'warning') content.className = 'warning';
+                content.textContent = log.text;
+                
+                line.appendChild(prefix);
+                line.appendChild(content);
+                termLines.appendChild(line);
+                
+                if(termLines.children.length > 3) {
+                    termLines.removeChild(termLines.firstChild);
+                }
+            }, log.delay);
+        });
+
+        // Countdown & Progress Logic
+        const REDIRECT_URL = "https://tally.so/r/RGbkdj";
+        const totalTime = 4000; // 4 seconds
+        let startTime = Date.now();
+        
+        const countdownEl = document.getElementById('countdown');
+        const pBar = document.getElementById('p-bar');
+        const rateEl = document.getElementById('rate');
+        const statusEl = document.getElementById('auth-status');
+
+        function updateProgress() {
+            const elapsed = Date.now() - startTime;
+            const remaining = Math.max(0, totalTime - elapsed);
+            
+            // Format time
+            const seconds = (remaining / 1000).toFixed(2);
+            countdownEl.textContent = seconds.padStart(5, '0');
+            
+            // Progress bar
+            const percent = Math.min(100, (elapsed / totalTime) * 100);
+            pBar.style.width = `${percent}%`;
+            
+            // Random transfer rate
+            if(Math.random() > 0.8) {
+                rateEl.textContent = (Math.random() * 100 + 400).toFixed(1);
+            }
+
+            // Update status text
+            if(percent > 25 && percent < 50) statusEl.textContent = "DECRYPTING PAYLOAD...";
+            if(percent >= 50 && percent < 85) statusEl.textContent = "ESTABLISHING TUNNEL...";
+            if(percent >= 85) statusEl.textContent = "REDIRECTING...";
+
+            if (elapsed < totalTime) {
+                requestAnimationFrame(updateProgress);
+            } else {
+                window.location.replace(REDIRECT_URL);
+            }
+        }
+        
+        requestAnimationFrame(updateProgress);
+
     </script>
 </body>
 </html>
