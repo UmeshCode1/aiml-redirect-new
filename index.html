@@ -5,22 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AIML Voice | Your Voice Matters</title>
     <link rel="icon" href="logo.png" type="image/png">
+    
     <!-- Fallback Redirect -->
-    <meta http-equiv="refresh" content="5; url=https://tally.so/r/RGbkdj">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <meta http-equiv="refresh" content="7; url=https://tally.so/r/RGbkdj">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-dark: #050508;
-            --primary: #00f0ff;
-            --primary-dim: rgba(0, 240, 255, 0.4);
-            --accent: #0080ff;
-            --purple: #8b5cf6;
+            --bg-dark: #050507;
+            --primary: #00e5ff;
+            --primary-dim: rgba(0, 229, 255, 0.3);
+            --accent: #3b82f6;
             --text-main: #ffffff;
             --text-muted: #94a3b8;
-            --card-bg: rgba(10, 12, 16, 0.65);
-            --card-border: rgba(255, 255, 255, 0.08);
-            --focus-glow: rgba(0, 240, 255, 0.3);
+            --text-dim: #64748b;
+            --card-bg: rgba(12, 14, 20, 0.4);
+            --card-border: rgba(255, 255, 255, 0.06);
         }
 
         * {
@@ -32,23 +34,26 @@
         body {
             background-color: var(--bg-dark);
             color: var(--text-main);
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Inter', sans-serif;
             min-height: 100vh;
-            overflow-x: hidden;
+            overflow: hidden;
             position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         /* Mouse Tracker Glow */
         #cursor-glow {
             position: fixed;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(0, 240, 255, 0.08) 0%, transparent 60%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(0, 229, 255, 0.05) 0%, transparent 50%);
             border-radius: 50%;
             pointer-events: none;
             transform: translate(-50%, -50%);
             z-index: 2;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.5s ease;
         }
 
         /* Ambient Background */
@@ -57,23 +62,23 @@
             top: -50%; left: -50%; right: -50%; bottom: -50%;
             width: 200%; height: 200%;
             background: 
-                radial-gradient(circle at 30% 40%, rgba(0, 128, 255, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 70% 60%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
+                radial-gradient(circle at 35% 45%, rgba(59, 130, 246, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 65% 55%, rgba(0, 229, 255, 0.02) 0%, transparent 40%);
             z-index: 1;
-            animation: breathe 20s ease-in-out infinite alternate;
+            animation: breathe 15s ease-in-out infinite alternate;
             transition: opacity 2s ease;
         }
 
         .ambient-mesh.brighten {
-            opacity: 1.5;
+            opacity: 1.2;
             background: 
-                radial-gradient(circle at 30% 40%, rgba(0, 128, 255, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 70% 60%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
+                radial-gradient(circle at 35% 45%, rgba(59, 130, 246, 0.06) 0%, transparent 45%),
+                radial-gradient(circle at 65% 55%, rgba(0, 229, 255, 0.04) 0%, transparent 45%);
         }
 
         @keyframes breathe {
-            0% { transform: scale(1) rotate(0deg); }
-            100% { transform: scale(1.1) rotate(3deg); }
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
         }
 
         /* Particles */
@@ -82,63 +87,66 @@
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: 3;
             pointer-events: none;
+            opacity: 0.6;
         }
 
-        /* Container Layout */
+        /* Central Glass Card */
         .app-container {
             position: relative;
             z-index: 10;
             width: 100%;
-            min-height: 100vh;
+            padding: 2rem;
             display: flex;
             justify-content: center;
-            align-items: center;
-            padding: 2rem;
         }
 
-        /* Central Glass Card */
         .glass-card {
             width: 100%;
-            max-width: 500px;
+            max-width: 480px;
             background: var(--card-bg);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--card-border);
-            border-radius: 24px;
+            border-radius: 20px;
             padding: 3.5rem 3rem;
             display: flex;
             flex-direction: column;
             align-items: center;
             box-shadow: 
-                0 30px 60px -15px rgba(0, 0, 0, 0.6),
-                inset 0 1px 1px rgba(255, 255, 255, 0.1),
-                inset 0 -1px 20px rgba(0, 240, 255, 0.03);
-            transition: all 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+                0 40px 80px -20px rgba(0, 0, 0, 0.8),
+                inset 0 1px 1px rgba(255, 255, 255, 0.08),
+                inset 0 -1px 20px rgba(0, 229, 255, 0.02);
+            transition: all 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
             position: relative;
             overflow: hidden;
         }
 
         .glass-card.expanded {
-            max-width: 900px;
-            padding: 4rem 3rem;
+            max-width: 700px;
+            padding: 4rem 3.5rem;
+            border-color: rgba(255, 255, 255, 0.08);
+            box-shadow: 
+                0 40px 100px -20px rgba(0, 0, 0, 0.9),
+                inset 0 1px 1px rgba(255, 255, 255, 0.1),
+                inset 0 -1px 30px rgba(0, 229, 255, 0.04);
         }
 
         /* Logo Animation */
         .logo-container {
             position: relative;
-            width: 85px;
-            height: 85px;
+            width: 75px;
+            height: 75px;
             margin-bottom: 2.5rem;
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: all 1s ease;
+            transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
         
         .expanded .logo-container {
             width: 60px;
             height: 60px;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
         }
 
         .logo-glow {
@@ -147,14 +155,14 @@
             height: 100%;
             background: var(--primary);
             border-radius: 50%;
-            filter: blur(25px);
-            opacity: 0.3;
-            animation: logoBreathe 4s ease-in-out infinite alternate;
+            filter: blur(20px);
+            opacity: 0.15;
+            transition: opacity 1s ease;
         }
-
-        @keyframes logoBreathe {
-            0% { transform: scale(0.9); opacity: 0.2; }
-            100% { transform: scale(1.1); opacity: 0.4; }
+        
+        .expanded .logo-glow {
+            opacity: 0.25;
+            filter: blur(25px);
         }
 
         .logo {
@@ -172,23 +180,24 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.6s ease, transform 0.6s ease;
         }
 
         .loader-ui.hidden {
             opacity: 0;
+            transform: translateY(-10px);
             pointer-events: none;
             position: absolute;
             visibility: hidden;
         }
 
         .loader-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            letter-spacing: 2px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 400;
+            letter-spacing: 0.5px;
             margin-bottom: 2rem;
             color: var(--text-main);
-            text-transform: uppercase;
         }
 
         .progress-wrapper {
@@ -200,16 +209,18 @@
             display: flex;
             justify-content: space-between;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            color: var(--text-muted);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-dim);
             margin-bottom: 10px;
         }
 
         .progress-track {
             width: 100%;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 4px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 2px;
             overflow: hidden;
             position: relative;
         }
@@ -217,31 +228,18 @@
         .progress-fill {
             height: 100%;
             width: 0%;
-            background: linear-gradient(90deg, var(--accent), var(--primary));
-            border-radius: 4px;
-            box-shadow: 0 0 12px var(--primary-dim);
-            position: relative;
+            background: var(--primary);
+            box-shadow: 0 0 10px var(--primary-dim);
             transition: width 0.1s ease;
-        }
-
-        .progress-fill::after {
-            content: '';
-            position: absolute;
-            top: 0; right: 0; bottom: 0;
-            width: 30px;
-            background: #fff;
-            filter: blur(6px);
-            opacity: 0.9;
-            animation: streak 2s linear infinite;
         }
 
         .logs-container {
             width: 100%;
-            height: 60px;
+            height: 40px;
             position: relative;
             overflow: hidden;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
+            font-weight: 300;
             color: var(--text-muted);
             text-align: center;
         }
@@ -250,12 +248,12 @@
             position: absolute;
             width: 100%;
             opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(8px);
+            transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
         .log-line.active { opacity: 1; transform: translateY(0); }
-        .log-line.exit { opacity: 0; transform: translateY(-10px); }
+        .log-line.exit { opacity: 0; transform: translateY(-8px); }
 
 
         /* --- MAIN HERO UI --- */
@@ -267,8 +265,8 @@
             opacity: 0;
             visibility: hidden;
             position: absolute;
-            transform: scale(0.95);
-            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(10px);
+            transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
             transition-delay: 0.2s;
             text-align: center;
         }
@@ -277,190 +275,98 @@
             opacity: 1;
             visibility: visible;
             position: relative;
-            transform: scale(1);
-        }
-
-        .brand-text {
-            font-size: 0.85rem;
-            color: var(--primary);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-
-        .main-headline {
-            font-size: 3.5rem;
-            font-weight: 700;
-            letter-spacing: -1px;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        .sub-headline {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            color: var(--text-muted);
-            max-width: 650px;
-            margin-bottom: 2rem;
-        }
-
-        .secondary-text {
-            font-size: 0.9rem;
-            color: rgba(148, 163, 184, 0.7);
-            margin-bottom: 3rem;
-            font-style: italic;
-        }
-
-        .cta-button {
-            background: rgba(0, 240, 255, 0.1);
-            border: 1px solid rgba(0, 240, 255, 0.4);
-            color: var(--primary);
-            padding: 1rem 2.5rem;
-            border-radius: 50px;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            backdrop-filter: blur(10px);
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
-        }
-
-        .cta-button::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.3), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .cta-button:hover {
-            background: var(--primary);
-            color: var(--bg-dark);
-            box-shadow: 0 0 30px rgba(0, 240, 255, 0.4);
-            transform: translateY(-2px);
-        }
-
-        .cta-button:hover::before {
-            left: 100%;
-        }
-
-
-        /* --- FORM UI --- */
-        .form-ui {
-            width: 100%;
-            display: none; /* Initially hidden */
-            flex-direction: column;
-            gap: 1.5rem;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-            text-align: left;
-        }
-
-        .form-ui.visible {
-            display: flex;
-            opacity: 1;
             transform: translateY(0);
         }
 
-        .form-header {
-            margin-bottom: 1rem;
-            text-align: center;
+        .brand-text {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 1.2rem;
         }
 
-        .form-header h2 {
-            font-size: 2rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .input-group {
-            position: relative;
-            width: 100%;
-        }
-
-        .input-field {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 1.2rem 1rem 0.6rem 1rem;
+        .main-headline {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 1rem;
-            color: #fff;
-            transition: all 0.3s ease;
-            outline: none;
+            font-size: 3.2rem;
+            font-weight: 600;
+            letter-spacing: -1px;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            color: #ffffff;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
         }
 
-        textarea.input-field {
-            min-height: 120px;
-            resize: vertical;
-        }
-
-        .floating-label {
-            position: absolute;
-            top: 1.2rem;
-            left: 1rem;
+        .sub-headline {
+            font-size: 1.05rem;
+            font-weight: 300;
+            line-height: 1.6;
             color: var(--text-muted);
-            font-size: 1rem;
-            pointer-events: none;
-            transition: all 0.3s ease;
-            transform-origin: left top;
+            max-width: 580px;
+            margin-bottom: 1.5rem;
         }
 
-        .input-field:focus, 
-        .input-field:not(:placeholder-shown) {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(0, 240, 255, 0.5);
-            box-shadow: 0 0 15px var(--focus-glow);
+        .description-text {
+            font-size: 0.95rem;
+            font-weight: 300;
+            line-height: 1.6;
+            color: var(--text-muted);
+            max-width: 550px;
+            margin-bottom: 2.5rem;
         }
 
-        .input-field:focus + .floating-label,
-        .input-field:not(:placeholder-shown) + .floating-label {
-            transform: translateY(-0.8rem) scale(0.75);
-            color: var(--primary);
-        }
-
-        .select-field {
-            padding: 1rem;
-            appearance: none;
-            cursor: pointer;
+        .closing-text {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            font-style: normal;
+            margin-top: 2rem;
+            max-width: 450px;
+            line-height: 1.5;
         }
         
-        .select-field option {
-            background: var(--bg-dark);
-            color: #fff;
-        }
-
-        .submit-btn {
-            width: 100%;
-            background: linear-gradient(90deg, var(--accent), var(--primary));
-            border: none;
-            color: #fff;
-            padding: 1.2rem;
-            border-radius: 12px;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 600;
+        .cta-button {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+            padding: 1rem 2.5rem;
+            border-radius: 100px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 400;
             cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 1rem;
-            box-shadow: 0 10px 20px rgba(0, 240, 255, 0.2);
+            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            backdrop-filter: blur(10px);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
         }
 
-        .submit-btn:hover {
-            box-shadow: 0 10px 30px rgba(0, 240, 255, 0.4);
+        .cta-button:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
             transform: translateY(-2px);
-            filter: brightness(1.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .redirect-status {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--primary);
+            opacity: 0;
+            margin-top: 1.5rem;
+            transition: opacity 0.5s ease;
+        }
+        
+        .redirect-status.show {
+            opacity: 0.8;
+            animation: pulseText 1.5s infinite alternate;
+        }
+
+        @keyframes pulseText {
+            0% { opacity: 0.4; }
+            100% { opacity: 0.9; }
         }
 
         /* Responsive */
@@ -482,16 +388,16 @@
             
             <div class="logo-container">
                 <div class="logo-glow"></div>
-                <img src="logo.png" alt="AIML Club Logo" class="logo" onerror="this.src='https://via.placeholder.com/85/050508/00f0ff?text=AI'">
+                <img src="logo.png" alt="AIML Club Logo" class="logo" onerror="this.src='https://via.placeholder.com/85/050508/00e5ff?text=AI'">
             </div>
             
             <!-- LOADING SEQUENCE -->
             <div class="loader-ui" id="loader-ui">
-                <div class="loader-title">System Handshake</div>
+                <div class="loader-title">Preparing Your Experience</div>
                 
                 <div class="progress-wrapper">
                     <div class="progress-header">
-                        <span>NETWORK_LINK</span>
+                        <span>Loading</span>
                         <span id="percent">0%</span>
                     </div>
                     <div class="progress-track">
@@ -506,11 +412,27 @@
 
             <!-- HERO SECTION -->
             <div class="hero-ui" id="hero-ui">
-                <div class="brand-text">AI & Machine Learning Club – OCT</div>
-                <h1 class="main-headline">Your Voice Matters</h1>
-                <p class="sub-headline">Every idea can create impact. Share your thoughts, feedback, workshop interests, event concepts, and innovative suggestions with the AIML ecosystem.</p>
+                <div class="brand-text">Innovate • Implement • Inspire</div>
                 
-                <p class="secondary-text" id="redirect-status" style="margin-top: 2rem; color: var(--primary);">Redirecting to Nexus...</p>
+                <h1 class="main-headline">Your Voice Matters</h1>
+                
+                <p class="sub-headline">
+                    Let’s build a better college experience together.
+                </p>
+                
+                <p class="description-text">
+                    Share your ideas, feedback, workshop interests, event concepts, and innovative thoughts with the AI & Machine Learning Club – OCT.
+                </p>
+                
+                <a href="https://tally.so/r/RGbkdj" class="cta-button" id="cta-btn">
+                    ✨ Share Your Voice
+                </a>
+                
+                <p class="closing-text">
+                    Whether you're a student, faculty member, alumnus, mentor, or innovator — your perspective matters here.
+                </p>
+
+                <div class="redirect-status" id="redirect-status">Opening AIML Voice...</div>
             </div>
 
         </div>
@@ -524,7 +446,7 @@
             cursorGlow.style.top = e.clientY + 'px';
         });
 
-        // --- Neural Particles ---
+        // --- Gentle Particles ---
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         document.getElementById('particles').appendChild(canvas);
@@ -541,9 +463,9 @@
             constructor() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 0.15;
-                this.vy = (Math.random() - 0.5) * 0.15;
-                this.radius = Math.random() * 1.2;
+                this.vx = (Math.random() - 0.5) * 0.1;
+                this.vy = (Math.random() - 0.5) * 0.1;
+                this.radius = Math.random() * 1.5;
             }
             update() {
                 this.x += this.vx;
@@ -554,12 +476,12 @@
             draw() {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 255, 255, 0.4)`;
+                ctx.fillStyle = `rgba(255, 255, 255, 0.2)`;
                 ctx.fill();
             }
         }
 
-        for(let i=0; i<45; i++) particles.push(new Particle());
+        for(let i=0; i<35; i++) particles.push(new Particle());
 
         function animateParticles() {
             ctx.clearRect(0, 0, width, height);
@@ -574,7 +496,7 @@
                         ctx.beginPath();
                         ctx.moveTo(particles[i].x, particles[i].y);
                         ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.strokeStyle = `rgba(0, 240, 255, ${0.08 - dist/1800})`;
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${0.03 - dist/5000})`;
                         ctx.lineWidth = 0.5;
                         ctx.stroke();
                     }
@@ -586,12 +508,11 @@
 
         // --- Loading Sequence ---
         const messages = [
-            "Initializing AIML Voice...",
-            "Connecting student innovation network...",
-            "Authenticating student node...",
-            "Syncing collaborative intelligence...",
-            "Establishing secure voice channel...",
-            "Innovation portal ready."
+            "Setting things up...",
+            "Getting everything ready...",
+            "Connecting you with the community...",
+            "Almost ready...",
+            "Everything’s ready."
         ];
 
         const logsContainer = document.getElementById('logs');
@@ -601,15 +522,16 @@
         const loaderUi = document.getElementById('loader-ui');
         const heroUi = document.getElementById('hero-ui');
         const mesh = document.getElementById('mesh');
+        const redirectStatus = document.getElementById('redirect-status');
         
         let currentMsg = 0;
-        const totalDuration = 3000; // Fast 3s loading
+        const totalDuration = 3000; // 3 seconds loading
         const startTime = Date.now();
 
         const logElements = messages.map(msg => {
             const el = document.createElement('div');
             el.className = 'log-line';
-            el.textContent = `> ${msg}`;
+            el.textContent = msg;
             logsContainer.appendChild(el);
             return el;
         });
@@ -617,6 +539,8 @@
         function updateLoader() {
             const elapsed = Date.now() - startTime;
             let progress = Math.min(100, (elapsed / totalDuration) * 100);
+            
+            // Soft easing for progress bar
             const easeProgress = 1 - Math.pow(1 - (progress/100), 3);
             const currentPercent = Math.round(easeProgress * 100);
             
@@ -654,17 +578,30 @@
                 setTimeout(() => {
                     heroUi.classList.add('visible');
                     
-                    // Trigger actual redirect after a brief moment to read the Hero text
+                    // Show redirect text and initiate auto-redirect
                     setTimeout(() => {
-                        window.location.replace("https://tally.so/r/RGbkdj");
-                    }, 1500);
-
-                }, 500);
+                        redirectStatus.classList.add('show');
+                        setTimeout(() => {
+                            window.location.replace("https://tally.so/r/RGbkdj");
+                        }, 800);
+                    }, 3500); // Gives user 3.5s to read the hero message before auto-redirecting
+                    
+                }, 600);
 
             }, 400);
         }
 
         requestAnimationFrame(updateLoader);
+
+        // Allow immediate manual redirect if button clicked
+        const ctaBtn = document.getElementById('cta-btn');
+        ctaBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            redirectStatus.classList.add('show');
+            setTimeout(() => {
+                window.location.replace("https://tally.so/r/RGbkdj");
+            }, 300);
+        });
 
     </script>
 </body>
