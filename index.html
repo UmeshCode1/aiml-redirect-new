@@ -18,8 +18,8 @@
             --text-main: #ffffff;
             --text-muted: #94a3b8;
             --text-dim: #64748b;
-            --card-bg: rgba(12, 14, 20, 0.6);
-            --card-border: rgba(255, 255, 255, 0.08);
+            --card-bg: rgba(12, 14, 20, 0.65);
+            --card-border: rgba(255, 255, 255, 0.06);
         }
 
         * {
@@ -43,8 +43,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            perspective: 1000px;
+            perspective: 1200px;
             height: 100dvh; /* Support for modern mobile viewports */
+            background-image: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
         }
 
         /* Performance Optimized Background Elements (No filter: blur) */
@@ -58,21 +59,21 @@
         }
 
         .orb-1 {
-            width: 600px; height: 600px;
-            background: radial-gradient(circle, rgba(0, 229, 255, 0.07) 0%, transparent 70%);
-            top: -15%; left: -15%;
+            width: 700px; height: 700px;
+            background: radial-gradient(circle, rgba(0, 229, 255, 0.06) 0%, transparent 60%);
+            top: -20%; left: -10%;
         }
 
         .orb-2 {
-            width: 700px; height: 700px;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.07) 0%, transparent 70%);
-            bottom: -20%; right: -15%;
-            animation-delay: -5s;
+            width: 800px; height: 800px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.05) 0%, transparent 60%);
+            bottom: -30%; right: -15%;
+            animation-delay: -7s;
         }
 
         @keyframes float {
             0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(60px, 30px) scale(1.1); }
+            100% { transform: translate(40px, 20px) scale(1.1); }
         }
 
         /* Lightweight Particles */
@@ -81,7 +82,7 @@
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: 3;
             pointer-events: none;
-            opacity: 0.6; /* Reduced opacity for subtlety */
+            opacity: 0.5; /* Super subtle */
         }
 
         /* Container & Card */
@@ -89,7 +90,7 @@
             position: relative;
             z-index: 10;
             width: 100%;
-            padding: 1.5rem; /* Better mobile padding */
+            padding: 1.5rem;
             display: flex;
             justify-content: center;
             transform-style: preserve-3d;
@@ -97,53 +98,55 @@
 
         .glass-card {
             width: 100%;
-            max-width: 460px; /* Slimmer for better read */
+            max-width: 480px; 
             background: var(--card-bg);
             /* Reduced blur for better thermals */
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--card-border);
-            border-radius: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.12); /* Light source from top */
+            border-bottom: 1px solid rgba(0, 0, 0, 0.8);
+            border-radius: 28px;
             padding: 3rem 2.5rem;
             display: flex;
             flex-direction: column;
             align-items: center;
             box-shadow: 
-                0 20px 40px -10px rgba(0, 0, 0, 0.6),
-                inset 0 1px 1px rgba(255, 255, 255, 0.1);
-            transition: max-width 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), 
-                        padding 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+                0 30px 60px -15px rgba(0, 0, 0, 0.8),
+                inset 0 1px 1px rgba(255, 255, 255, 0.05);
+            transition: max-width 0.9s cubic-bezier(0.16, 1, 0.3, 1), 
+                        padding 0.9s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
             overflow: hidden;
             will-change: transform;
         }
 
         .glass-card.expanded {
-            max-width: 700px;
-            padding: 3.5rem 3.5rem;
+            max-width: 720px;
+            padding: 4rem 3.5rem;
         }
 
         .glass-card.exit {
-            transform: scale(0.92) translateY(15px) !important;
+            transform: scale(0.9) translateY(20px) rotateX(-5deg) !important;
             opacity: 0;
-            transition: all 0.6s cubic-bezier(0.8, 0, 0.2, 1) !important;
+            transition: all 0.7s cubic-bezier(0.8, 0, 0.2, 1) !important;
         }
 
         /* Logo */
         .logo-container {
             position: relative;
-            width: 75px;
-            height: 75px;
+            width: 85px;
+            height: 85px;
             margin-bottom: 2rem;
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
         }
         
         .expanded .logo-container {
-            width: 60px;
-            height: 60px;
+            width: 65px;
+            height: 65px;
             margin-bottom: 1.5rem;
         }
 
@@ -154,13 +157,13 @@
             border-radius: 50%;
             position: relative;
             z-index: 2;
-            box-shadow: 0 0 20px rgba(0, 229, 255, 0.2);
-            animation: logoBreathe 4s ease-in-out infinite alternate;
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.15);
+            animation: logoBreathe 5s ease-in-out infinite alternate;
         }
 
         @keyframes logoBreathe {
-            0% { transform: scale(1); box-shadow: 0 0 20px rgba(0, 229, 255, 0.2); }
-            100% { transform: scale(1.08); box-shadow: 0 0 35px rgba(0, 229, 255, 0.5); }
+            0% { transform: scale(1); box-shadow: 0 0 20px rgba(0, 229, 255, 0.15); }
+            100% { transform: scale(1.05); box-shadow: 0 0 40px rgba(0, 229, 255, 0.4); }
         }
 
         /* --- LOADING UI --- */
@@ -169,7 +172,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            transition: opacity 0.5s ease, transform 0.5s ease;
+            transition: opacity 0.6s ease, transform 0.6s ease;
         }
 
         .loader-ui.hidden {
@@ -182,11 +185,14 @@
 
         .loader-title {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.25rem;
+            font-size: 1.35rem;
             font-weight: 500;
             letter-spacing: 0.5px;
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
             color: var(--text-main);
+            background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .progress-wrapper {
@@ -202,16 +208,17 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             color: var(--text-dim);
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .progress-track {
             width: 100%;
-            height: 3px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 3px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 4px;
             overflow: hidden;
             position: relative;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.5);
         }
 
         .progress-fill {
@@ -220,6 +227,7 @@
             background: linear-gradient(90deg, var(--accent), var(--primary));
             transition: width 0.1s ease;
             position: relative;
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
         }
 
         .logs-container {
@@ -248,40 +256,41 @@
         /* --- MAIN HERO UI --- */
         .hero-ui {
             width: 100%;
-            display: flex;
+            display: none; /* Initially hidden */
             flex-direction: column;
             align-items: center;
-            opacity: 0;
-            visibility: hidden;
-            position: absolute;
-            transform: translateY(15px);
-            transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-            transition-delay: 0.1s;
             text-align: center;
         }
 
         .hero-ui.visible {
+            display: flex;
+        }
+
+        .hero-element {
+            opacity: 0;
+            transform: translateY(15px);
+            transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .hero-ui.visible .hero-element {
             opacity: 1;
-            visibility: visible;
-            position: relative;
             transform: translateY(0);
         }
 
-        .brand-text {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            color: var(--primary);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
-            opacity: 0.9;
-        }
+        /* Staggered micro-animations */
+        .hero-element:nth-child(1) { transition-delay: 0.1s; }
+        .hero-element:nth-child(2) { transition-delay: 0.15s; }
+        .hero-element:nth-child(3) { transition-delay: 0.2s; }
+        .hero-element:nth-child(4) { transition-delay: 0.25s; }
+        .hero-element:nth-child(5) { transition-delay: 0.3s; }
+        .hero-element:nth-child(6) { transition-delay: 0.35s; }
+        .hero-element:nth-child(7) { transition-delay: 0.4s; }
 
         /* Highlighted Club Name Badge */
         .club-badge {
             background: linear-gradient(90deg, rgba(0, 229, 255, 0.1), rgba(99, 102, 241, 0.1));
             border: 1px solid rgba(0, 229, 255, 0.2);
-            padding: 0.5rem 1.2rem;
+            padding: 0.6rem 1.4rem;
             border-radius: 50px;
             font-family: 'Space Grotesk', sans-serif;
             font-size: 0.85rem;
@@ -289,62 +298,72 @@
             color: var(--primary);
             letter-spacing: 0.5px;
             margin-bottom: 1.5rem;
-            box-shadow: 0 4px 15px rgba(0, 229, 255, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 229, 255, 0.1);
+        }
+
+        .brand-text {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 1.2rem;
+            opacity: 0.8;
         }
 
         .main-headline {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 3.2rem;
+            font-size: 3.5rem;
             font-weight: 700;
-            letter-spacing: -1px;
+            letter-spacing: -1.5px;
             line-height: 1.1;
             margin-bottom: 1rem;
-            background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .sub-headline {
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             font-weight: 400;
             line-height: 1.5;
             color: #e2e8f0;
             max-width: 500px;
-            margin-bottom: 1.2rem;
+            margin-bottom: 1.5rem;
         }
 
         .description-text {
-            font-size: 0.95rem;
+            font-size: 1rem;
             font-weight: 300;
-            line-height: 1.6;
+            line-height: 1.7;
             color: var(--text-muted);
             max-width: 550px;
-            margin-bottom: 2.5rem;
+            margin-bottom: 3rem;
         }
 
         .cta-button {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(0, 229, 255, 0.4);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(0, 229, 255, 0.3);
             color: var(--text-main);
-            padding: 1rem 2.5rem;
+            padding: 1.1rem 2.8rem;
             border-radius: 100px;
             font-family: 'Inter', sans-serif;
             font-size: 1.05rem;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             text-decoration: none;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             animation: buttonPulse 3s infinite;
         }
 
         @keyframes buttonPulse {
-            0% { box-shadow: 0 0 0 0 rgba(0, 229, 255, 0.3); }
+            0% { box-shadow: 0 0 0 0 rgba(0, 229, 255, 0.2); }
             70% { box-shadow: 0 0 0 15px rgba(0, 229, 255, 0); }
             100% { box-shadow: 0 0 0 0 rgba(0, 229, 255, 0); }
         }
@@ -355,17 +374,16 @@
             top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(90deg, var(--accent), var(--primary));
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.4s ease;
             z-index: 0;
         }
 
-        /* Shine effect passing over the button */
         .cta-button::after {
             content: '';
             position: absolute;
             top: 0; left: -100%;
             width: 50%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
             transform: skewX(-20deg);
             animation: buttonShine 4s infinite;
             z-index: 2;
@@ -380,37 +398,54 @@
         .cta-button span {
             position: relative;
             z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cta-button svg {
+            width: 18px;
+            height: 18px;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .cta-button:hover {
             border-color: transparent;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 229, 255, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0, 229, 255, 0.25);
         }
 
         .cta-button:hover::before {
             opacity: 1;
         }
 
+        .cta-button:hover svg {
+            transform: translateX(4px);
+        }
+
         .closing-text {
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: var(--text-dim);
-            margin-top: 2rem;
-            max-width: 400px;
-            line-height: 1.5;
+            margin-top: 2.5rem;
+            max-width: 420px;
+            line-height: 1.6;
         }
 
         /* Responsive */
         @media (max-width: 600px) {
-            .app-container { padding: 1rem; }
-            .glass-card { padding: 2.5rem 1.5rem; border-radius: 20px; }
+            .app-container { padding: 1.2rem; }
+            .glass-card { 
+                padding: 2.5rem 1.5rem; 
+                border-radius: 24px; 
+            }
             .glass-card.expanded { padding: 3rem 1.5rem; }
-            .main-headline { font-size: 2.4rem; }
-            .sub-headline { font-size: 1rem; }
-            .description-text { font-size: 0.9rem; margin-bottom: 2rem; }
-            .club-badge { font-size: 0.75rem; padding: 0.4rem 1rem; }
-            .logo-container { width: 65px; height: 65px; margin-bottom: 1.5rem; }
+            .main-headline { font-size: 2.5rem; letter-spacing: -1px; }
+            .sub-headline { font-size: 1.05rem; margin-bottom: 1rem; }
+            .description-text { font-size: 0.95rem; margin-bottom: 2rem; }
+            .club-badge { font-size: 0.75rem; padding: 0.5rem 1.2rem; }
+            .logo-container { width: 70px; height: 70px; margin-bottom: 1.5rem; }
             .expanded .logo-container { width: 55px; height: 55px; }
+            .cta-button { padding: 1rem 2.2rem; font-size: 1rem; }
         }
     </style>
 </head>
@@ -447,25 +482,32 @@
 
             <!-- HERO SECTION -->
             <div class="hero-ui" id="hero-ui">
-                <div class="club-badge">AI & Machine Learning Club - OCT</div>
+                <div class="hero-element club-badge">AI & Machine Learning Club - OCT</div>
                 
-                <div class="brand-text">Innovate. Implement. Inspire.</div>
+                <div class="hero-element brand-text">Innovate. Implement. Inspire.</div>
                 
-                <h1 class="main-headline">Your Voice Matters</h1>
+                <h1 class="hero-element main-headline">Your Voice Matters</h1>
                 
-                <p class="sub-headline">
+                <p class="hero-element sub-headline">
                     Let’s build a better college experience together.
                 </p>
                 
-                <p class="description-text">
+                <p class="hero-element description-text">
                     Share your ideas, feedback, workshop interests, event concepts, and innovative thoughts to shape the future of our community.
                 </p>
                 
-                <a href="https://tally.so/r/RGbkdj" class="cta-button" id="cta-btn">
-                    <span>✨ Share Your Voice</span>
-                </a>
+                <div class="hero-element">
+                    <a href="https://tally.so/r/RGbkdj" class="cta-button" id="cta-btn">
+                        <span>
+                            ✨ Share Your Voice
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </span>
+                    </a>
+                </div>
                 
-                <p class="closing-text">
+                <p class="hero-element closing-text">
                     Whether you're a student, faculty member, alumnus, mentor, or innovator — your perspective matters here.
                 </p>
             </div>
@@ -483,8 +525,8 @@
             document.addEventListener('mousemove', (e) => {
                 if (!card.classList.contains('expanded') || ticking) return;
                 window.requestAnimationFrame(() => {
-                    const xAxis = (window.innerWidth / 2 - e.pageX) / 60;
-                    const yAxis = (window.innerHeight / 2 - e.pageY) / 60;
+                    const xAxis = (window.innerWidth / 2 - e.pageX) / 70;
+                    const yAxis = (window.innerHeight / 2 - e.pageY) / 70;
                     card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
                     ticking = false;
                 });
@@ -498,7 +540,6 @@
         }
 
         // --- Performance Optimized Particles ---
-        // Reduced particle count and simplified math for better thermals
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         document.getElementById('particles').appendChild(canvas);
@@ -511,8 +552,8 @@
         window.addEventListener('resize', resize);
         resize();
 
-        // Only 25 particles to keep CPU usage extremely low
-        const particleCount = isMobile ? 15 : 25; 
+        // Very low particle count for extremely light CPU load
+        const particleCount = isMobile ? 12 : 20; 
 
         class Particle {
             constructor() {
@@ -521,7 +562,7 @@
                 this.vx = (Math.random() - 0.5) * 0.1;
                 this.vy = (Math.random() - 0.5) * 0.1;
                 this.radius = Math.random() * 1.5;
-                this.alpha = Math.random() * 0.3 + 0.1;
+                this.alpha = Math.random() * 0.25 + 0.05;
             }
             update() {
                 this.x += this.vx;
@@ -567,7 +608,7 @@
         const heroUi = document.getElementById('hero-ui');
         
         let currentMsg = 0;
-        const totalDuration = 2500; // Faster 2.5 seconds loading to respect user time
+        const totalDuration = 2500;
         const startTime = Date.now();
 
         const logElements = messages.map(msg => {
