@@ -3,19 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AIML | Secure Portal</title>
+    <title>AIML Voice | Portal</title>
     <link rel="icon" href="logo.png" type="image/png">
-    <!-- Removed meta refresh to handle redirect precisely via JS -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg: #030712;
-            --primary: #38bdf8;
-            --accent: #818cf8;
-            --danger: #fb7185;
-            --glow: rgba(56, 189, 248, 0.5);
-            --card-bg: rgba(15, 23, 42, 0.6);
+            --bg-dark: #0a0a0c;
+            --primary: #00f0ff;
+            --primary-dim: rgba(0, 240, 255, 0.4);
+            --accent: #0080ff;
+            --purple: #8b5cf6;
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --card-bg: rgba(16, 18, 23, 0.65);
+            --card-border: rgba(255, 255, 255, 0.08);
         }
 
         * {
@@ -26,9 +28,9 @@
         }
 
         body {
-            background-color: var(--bg);
-            color: #fff;
-            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Space Grotesk', sans-serif;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -37,323 +39,37 @@
             position: relative;
         }
 
-        /* Canvas Particle Background */
-        #particles {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 1;
-        }
-
-        /* Ambient Glows */
-        .ambient-glow {
-            position: absolute;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, var(--glow) 0%, transparent 60%);
+        /* Mouse Tracker Glow */
+        #cursor-glow {
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(0, 240, 255, 0.05) 0%, transparent 70%);
             border-radius: 50%;
-            top: 50%;
-            left: 50%;
+            pointer-events: none;
             transform: translate(-50%, -50%);
-            opacity: 0.15;
             z-index: 2;
-            animation: pulseGlow 4s ease-in-out infinite alternate;
+            transition: opacity 0.3s ease;
         }
 
-        @keyframes pulseGlow {
-            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.1; }
-            100% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.2; }
-        }
-
-        /* Main UI Container */
-        .hud-wrapper {
-            position: relative;
-            z-index: 10;
-            width: 100%;
-            max-width: 550px;
-            padding: 2px;
-            background: linear-gradient(135deg, rgba(56, 189, 248, 0.5), rgba(129, 140, 248, 0.1), rgba(56, 189, 248, 0.5));
-            border-radius: 16px;
-            clip-path: polygon(0 20px, 20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
-            animation: bootUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            transform: translateY(30px);
-            opacity: 0;
-            box-shadow: 0 0 50px rgba(56, 189, 248, 0.2);
-        }
-
-        @keyframes bootUp {
-            100% { transform: translateY(0); opacity: 1; }
-        }
-
-        .hud-inner {
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            border-radius: 14px;
-            padding: 3rem 2.5rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            clip-path: polygon(0 18px, 18px 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%);
-            position: relative;
-        }
-
-        /* Decorative Corners */
-        .corner {
+        /* Ambient Mesh Background */
+        .ambient-mesh {
             position: absolute;
-            width: 15px; height: 15px;
-            border: 2px solid var(--primary);
-            opacity: 0.7;
-        }
-        .c-tl { top: 20px; left: 20px; border-right: none; border-bottom: none; }
-        .c-tr { top: 20px; right: 20px; border-left: none; border-bottom: none; }
-        .c-bl { bottom: 20px; left: 20px; border-right: none; border-top: none; }
-        .c-br { bottom: 20px; right: 20px; border-left: none; border-top: none; }
-
-        /* Hexagon Logo Container */
-        .hex-container {
-            position: relative;
-            width: 120px;
-            height: 138.56px;
-            margin-bottom: 2rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            top: -50%; left: -50%; right: -50%; bottom: -50%;
+            width: 200%; height: 200%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(0, 128, 255, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.08) 0%, transparent 40%);
+            z-index: 1;
+            animation: breathe 15s ease-in-out infinite alternate;
         }
 
-        .hex-border {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-color: transparent;
-            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-            border: 2px solid var(--primary);
-            animation: rotateHex 10s linear infinite;
-            box-sizing: border-box;
-        }
-        
-        .hex-border::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: inherit;
-            border: 2px solid var(--accent);
-            transform: scale(1.1);
-            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-            animation: rotateHex 15s linear infinite reverse;
+        @keyframes breathe {
+            0% { transform: scale(1) rotate(0deg); }
+            100% { transform: scale(1.1) rotate(5deg); }
         }
 
-        @keyframes rotateHex {
-            100% { transform: rotate(360deg); }
-        }
-
-        .logo {
-            width: 75px;
-            height: 75px;
-            border-radius: 50%;
-            object-fit: contain;
-            z-index: 5;
-            filter: drop-shadow(0 0 10px var(--primary));
-            animation: heartbeat 2s ease-in-out infinite;
-        }
-
-        @keyframes heartbeat {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); filter: drop-shadow(0 0 20px var(--primary)); }
-        }
-
-        /* Typography */
-        .title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 900;
-            color: #fff;
-            letter-spacing: 4px;
-            margin-bottom: 0.2rem;
-            text-shadow: 0 0 15px var(--glow);
-            position: relative;
-        }
-
-        /* Glitch Effect on Title */
-        .glitch {
-            position: relative;
-        }
-        .glitch::before, .glitch::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0.8;
-        }
-        .glitch::before {
-            left: 2px;
-            text-shadow: -2px 0 var(--danger);
-            clip: rect(24px, 550px, 90px, 0);
-            animation: glitch-anim 3s infinite linear alternate-reverse;
-        }
-        .glitch::after {
-            left: -2px;
-            text-shadow: -2px 0 var(--primary);
-            clip: rect(85px, 550px, 140px, 0);
-            animation: glitch-anim 2.5s infinite linear alternate-reverse;
-        }
-
-        @keyframes glitch-anim {
-            0% { clip: rect(10px, 9999px, 86px, 0); }
-            10% { clip: rect(44px, 9999px, 50px, 0); }
-            20% { clip: rect(78px, 9999px, 10px, 0); }
-            30% { clip: rect(22px, 9999px, 49px, 0); }
-            40% { clip: rect(96px, 9999px, 34px, 0); }
-            50% { clip: rect(48px, 9999px, 2px, 0); }
-            60% { clip: rect(62px, 9999px, 88px, 0); }
-            70% { clip: rect(31px, 9999px, 15px, 0); }
-            80% { clip: rect(9px, 9999px, 55px, 0); }
-            90% { clip: rect(87px, 9999px, 20px, 0); }
-            100% { clip: rect(53px, 9999px, 73px, 0); }
-        }
-
-        .subtitle {
-            font-family: 'Share Tech Mono', monospace;
-            color: var(--primary);
-            font-size: 1rem;
-            margin-bottom: 2rem;
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .spinner {
-            width: 14px;
-            height: 14px;
-            border: 2px solid transparent;
-            border-top-color: var(--primary);
-            border-left-color: var(--primary);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        /* Terminal Window */
-        .terminal {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(56, 189, 248, 0.2);
-            border-radius: 8px;
-            padding: 1rem;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.85rem;
-            color: #94a3b8;
-            height: 80px;
-            text-align: left;
-            margin-bottom: 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .terminal::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; height: 2px;
-            background: var(--primary);
-            opacity: 0.5;
-            box-shadow: 0 0 10px var(--primary);
-        }
-
-        .terminal-lines {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .line {
-            display: flex;
-            gap: 8px;
-            opacity: 0;
-            transform: translateX(-10px);
-            animation: typeLine 0.1s forwards;
-        }
-
-        .line .prefix { color: var(--primary); }
-        .line .success { color: #34d399; }
-        .line .warning { color: #fbbf24; }
-
-        @keyframes typeLine {
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        /* Progress Bar */
-        .progress-container {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-bottom: 1.5rem;
-        }
-
-        .progress-header {
-            display: flex;
-            justify-content: space-between;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.8rem;
-            color: var(--accent);
-        }
-
-        .progress-track {
-            width: 100%;
-            height: 6px;
-            background: rgba(0, 0, 0, 0.6);
-            border-radius: 3px;
-            overflow: hidden;
-            border: 1px solid rgba(129, 140, 248, 0.3);
-        }
-
-        .progress-bar {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            box-shadow: 0 0 10px var(--primary);
-            transition: width 0.1s linear;
-        }
-
-        /* Bypass Button */
-        .btn-bypass {
-            background: transparent;
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            color: #94a3b8;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.75rem;
-            letter-spacing: 2px;
-            padding: 8px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-bypass::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.2), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .btn-bypass:hover {
-            color: #fff;
-            border-color: var(--primary);
-            box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
-            text-shadow: 0 0 5px var(--primary);
-        }
-
-        .btn-bypass:hover::before {
-            left: 100%;
-        }
-
-        /* Scanline Overlay */
+        /* Scanning lines */
         .scanlines {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -361,59 +77,242 @@
             background-size: 100% 4px;
             z-index: 999;
             pointer-events: none;
-            opacity: 0.3;
+            opacity: 0.15;
         }
 
+        /* Main Glass Card */
+        .glass-card {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 480px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 3rem 2.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 
+                0 25px 50px -12px rgba(0, 0, 0, 0.5),
+                inset 0 1px 1px rgba(255, 255, 255, 0.1),
+                inset 0 -1px 20px rgba(0, 240, 255, 0.05);
+            animation: cardEnter 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(20px) scale(0.98);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes cardEnter {
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .logo-container {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo-glow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: var(--primary);
+            border-radius: 50%;
+            filter: blur(25px);
+            opacity: 0.4;
+            animation: logoBreathe 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes logoBreathe {
+            0% { transform: scale(0.8); opacity: 0.2; }
+            100% { transform: scale(1.2); opacity: 0.5; }
+        }
+
+        .logo {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+            border-radius: 50%;
+            position: relative;
+            z-index: 2;
+        }
+
+        .title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.25rem;
+            background: linear-gradient(135deg, #fff 0%, #b0c4de 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            color: var(--primary);
+            font-weight: 400;
+            letter-spacing: 1px;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+        }
+
+        /* Refined Progress Bar */
+        .progress-wrapper {
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent), var(--primary));
+            border-radius: 4px;
+            box-shadow: 0 0 10px var(--primary-dim);
+            position: relative;
+            transition: width 0.1s ease;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0; right: 0; bottom: 0;
+            width: 20px;
+            background: #fff;
+            filter: blur(5px);
+            opacity: 0.8;
+            animation: streak 2s linear infinite;
+        }
+
+        @keyframes streak {
+            0% { transform: translateX(-100px); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateX(20px); opacity: 0; }
+        }
+
+        /* AI System Logs */
+        .logs-container {
+            width: 100%;
+            height: 60px;
+            position: relative;
+            overflow: hidden;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        .log-line {
+            position: absolute;
+            width: 100%;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .log-line.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .log-line.exit {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        /* Canvas */
+        #particles {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        /* Expand Transition */
+        .glass-card.expanded {
+            max-width: 100vw;
+            height: 100vh;
+            border-radius: 0;
+            border: none;
+            background: var(--bg-dark);
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            justify-content: center;
+        }
+
+        .glass-card.expanded .logo-container,
+        .glass-card.expanded .title,
+        .glass-card.expanded .subtitle,
+        .glass-card.expanded .progress-wrapper,
+        .glass-card.expanded .logs-container {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
     </style>
 </head>
 <body>
+    <div class="ambient-mesh"></div>
     <div id="particles"></div>
-    <div class="ambient-glow"></div>
     <div class="scanlines"></div>
+    <div id="cursor-glow"></div>
 
-    <div class="hud-wrapper">
-        <div class="hud-inner">
-            <div class="corner c-tl"></div>
-            <div class="corner c-tr"></div>
-            <div class="corner c-bl"></div>
-            <div class="corner c-br"></div>
+    <div class="glass-card" id="main-card">
+        <div class="logo-container">
+            <div class="logo-glow"></div>
+            <img src="logo.png" alt="AIML Club Logo" class="logo" onerror="this.src='https://via.placeholder.com/70/0a0a0c/00f0ff?text=AI'">
+        </div>
+        
+        <h1 class="title">AIML Voice</h1>
+        <div class="subtitle">Innovation Portal</div>
 
-            <div class="hex-container">
-                <div class="hex-border"></div>
-                <!-- Inline SVG of a hexagon for exact shape matching if needed, but CSS clip-path works -->
-                <div style="width: 100%; height: 100%; position: absolute; clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); border: 1px solid var(--primary); box-sizing: border-box;"></div>
-                <img src="logo.png" alt="Logo" class="logo" onerror="this.src='https://via.placeholder.com/75/030712/38bdf8?text=AI'">
+        <div class="progress-wrapper">
+            <div class="progress-header">
+                <span>SYSTEM_STATUS</span>
+                <span id="percent">0%</span>
             </div>
-
-            <h1 class="title glitch" data-text="SYSTEM UPLINK">SYSTEM UPLINK</h1>
-            
-            <div class="subtitle">
-                <div class="spinner"></div>
-                <span id="auth-status">AUTHENTICATING...</span>
+            <div class="progress-track">
+                <div class="progress-fill" id="p-bar"></div>
             </div>
+        </div>
 
-            <div class="terminal">
-                <div class="terminal-lines" id="term-lines">
-                    <!-- Lines added via JS -->
-                </div>
-            </div>
-
-            <div class="progress-container">
-                <div class="progress-header">
-                    <span>TRANSFER_RATE: <span id="rate">0</span> MB/s</span>
-                    <span>T-MINUS: <span id="countdown">04.00</span>s</span>
-                </div>
-                <div class="progress-track">
-                    <div class="progress-bar" id="p-bar"></div>
-                </div>
-            </div>
-
-            <a href="https://tally.so/r/RGbkdj" class="btn-bypass">>> INITIATE_MANUAL_OVERRIDE</a>
+        <div class="logs-container" id="logs">
+            <!-- Logs injected via JS -->
         </div>
     </div>
 
     <script>
-        // Particle Background Logic
+        // --- 1. Mouse Reactive Glow ---
+        const cursorGlow = document.getElementById('cursor-glow');
+        document.addEventListener('mousemove', (e) => {
+            cursorGlow.style.left = e.clientX + 'px';
+            cursorGlow.style.top = e.clientY + 'px';
+        });
+
+        // --- 2. Subtle Neural Particles ---
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         document.getElementById('particles').appendChild(canvas);
@@ -424,7 +323,6 @@
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
         }
-        
         window.addEventListener('resize', resize);
         resize();
 
@@ -432,9 +330,10 @@
             constructor() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
-                this.radius = Math.random() * 1.5;
+                this.vx = (Math.random() - 0.5) * 0.2; // Slower, elegant movement
+                this.vy = (Math.random() - 0.5) * 0.2;
+                this.radius = Math.random() * 1;
+                this.alpha = Math.random() * 0.5 + 0.1;
             }
             update() {
                 this.x += this.vx;
@@ -445,12 +344,12 @@
             draw() {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(56, 189, 248, 0.4)';
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
                 ctx.fill();
             }
         }
 
-        for(let i=0; i<70; i++) particles.push(new Particle());
+        for(let i=0; i<40; i++) particles.push(new Particle()); // Reduced count for minimal look
 
         function animateParticles() {
             ctx.clearRect(0, 0, width, height);
@@ -464,11 +363,11 @@
                     const dy = particles[i].y - particles[j].y;
                     const dist = Math.sqrt(dx*dx + dy*dy);
                     
-                    if(dist < 100) {
+                    if(dist < 120) { // Connect nodes
                         ctx.beginPath();
                         ctx.moveTo(particles[i].x, particles[i].y);
                         ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.strokeStyle = `rgba(56, 189, 248, ${0.15 - dist/1000})`;
+                        ctx.strokeStyle = `rgba(0, 240, 255, ${0.1 - dist/1200})`;
                         ctx.lineWidth = 0.5;
                         ctx.stroke();
                     }
@@ -478,80 +377,85 @@
         }
         animateParticles();
 
-        // Terminal Typing Logic
-        const logs = [
-            { text: "Resolving DNS for external node...", type: "normal", delay: 400 },
-            { text: "Node found at IP 104.21.x.x", type: "success", delay: 1200 },
-            { text: "Bypassing local firewalls...", type: "warning", delay: 2000 },
-            { text: "Secure handshake complete. Bridging...", type: "success", delay: 2800 }
+        // --- 3. AI System Logs & Progress ---
+        const messages = [
+            "Initializing neural interface...",
+            "Authenticating student node...",
+            "Syncing innovation channels...",
+            "Connecting to AIML Voice...",
+            "Establishing secure collaboration layer...",
+            "Voice gateway established."
         ];
 
-        const termLines = document.getElementById('term-lines');
+        const logsContainer = document.getElementById('logs');
+        const pBar = document.getElementById('p-bar');
+        const percentText = document.getElementById('percent');
+        const card = document.getElementById('main-card');
         
-        logs.forEach(log => {
-            setTimeout(() => {
-                const line = document.createElement('div');
-                line.className = 'line';
-                
-                const prefix = document.createElement('span');
-                prefix.className = 'prefix';
-                prefix.textContent = '>';
-                
-                const content = document.createElement('span');
-                if(log.type === 'success') content.className = 'success';
-                if(log.type === 'warning') content.className = 'warning';
-                content.textContent = log.text;
-                
-                line.appendChild(prefix);
-                line.appendChild(content);
-                termLines.appendChild(line);
-                
-                if(termLines.children.length > 3) {
-                    termLines.removeChild(termLines.firstChild);
-                }
-            }, log.delay);
+        let currentMsg = 0;
+        let progress = 0;
+        const totalDuration = 4500; // 4.5 seconds to load
+        const startTime = Date.now();
+
+        // Setup log elements
+        const logElements = messages.map(msg => {
+            const el = document.createElement('div');
+            el.className = 'log-line';
+            el.textContent = msg;
+            logsContainer.appendChild(el);
+            return el;
         });
 
-        // Countdown & Progress Logic
-        const REDIRECT_URL = "https://tally.so/r/RGbkdj";
-        const totalTime = 4000; // 4 seconds
-        let startTime = Date.now();
-        
-        const countdownEl = document.getElementById('countdown');
-        const pBar = document.getElementById('p-bar');
-        const rateEl = document.getElementById('rate');
-        const statusEl = document.getElementById('auth-status');
-
-        function updateProgress() {
+        function updateLoader() {
             const elapsed = Date.now() - startTime;
-            const remaining = Math.max(0, totalTime - elapsed);
+            progress = Math.min(100, (elapsed / totalDuration) * 100);
             
-            // Format time
-            const seconds = (remaining / 1000).toFixed(2);
-            countdownEl.textContent = seconds.padStart(5, '0');
+            // Ease out cubic logic for smooth bar progress
+            const easeProgress = 1 - Math.pow(1 - (progress/100), 3);
+            const currentPercent = Math.round(easeProgress * 100);
             
-            // Progress bar
-            const percent = Math.min(100, (elapsed / totalTime) * 100);
-            pBar.style.width = `${percent}%`;
-            
-            // Random transfer rate
-            if(Math.random() > 0.8) {
-                rateEl.textContent = (Math.random() * 100 + 400).toFixed(1);
+            pBar.style.width = `${currentPercent}%`;
+            percentText.textContent = `${currentPercent}%`;
+
+            // Update Logs based on progress
+            const msgIndex = Math.floor((progress / 100) * messages.length);
+            if (msgIndex !== currentMsg && msgIndex < messages.length) {
+                if(logElements[currentMsg]) logElements[currentMsg].className = 'log-line exit';
+                currentMsg = msgIndex;
+                if(logElements[currentMsg]) logElements[currentMsg].className = 'log-line active';
+            } else if (currentMsg === 0 && logElements[0].className === 'log-line') {
+                logElements[0].className = 'log-line active';
             }
 
-            // Update status text
-            if(percent > 25 && percent < 50) statusEl.textContent = "DECRYPTING PAYLOAD...";
-            if(percent >= 50 && percent < 85) statusEl.textContent = "ESTABLISHING TUNNEL...";
-            if(percent >= 85) statusEl.textContent = "REDIRECTING...";
-
-            if (elapsed < totalTime) {
-                requestAnimationFrame(updateProgress);
+            if (progress < 100) {
+                requestAnimationFrame(updateLoader);
             } else {
-                window.location.replace(REDIRECT_URL);
+                completeLoading();
             }
         }
-        
-        requestAnimationFrame(updateProgress);
+
+        function completeLoading() {
+            // Cinematic Transition Unlock
+            if(logElements[currentMsg]) logElements[currentMsg].className = 'log-line exit';
+            
+            const unlockMsg = document.createElement('div');
+            unlockMsg.className = 'log-line active';
+            unlockMsg.style.color = 'var(--primary)';
+            unlockMsg.textContent = "ACCESS GRANTED";
+            logsContainer.appendChild(unlockMsg);
+
+            setTimeout(() => {
+                // Expand card to fade out
+                card.classList.add('expanded');
+                
+                // Finally redirect to Tally form
+                setTimeout(() => {
+                    window.location.replace("https://tally.so/r/RGbkdj");
+                }, 800);
+            }, 600);
+        }
+
+        requestAnimationFrame(updateLoader);
 
     </script>
 </body>
