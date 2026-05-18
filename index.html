@@ -3,28 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AIML Voice | Portal</title>
+    <title>AIML Voice | Your Voice Matters</title>
     <link rel="icon" href="logo.png" type="image/png">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Fallback Redirect -->
+    <meta http-equiv="refresh" content="5; url=https://tally.so/r/RGbkdj">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-dark: #0a0a0c;
+            --bg-dark: #050508;
             --primary: #00f0ff;
             --primary-dim: rgba(0, 240, 255, 0.4);
             --accent: #0080ff;
             --purple: #8b5cf6;
             --text-main: #ffffff;
             --text-muted: #94a3b8;
-            --card-bg: rgba(16, 18, 23, 0.65);
+            --card-bg: rgba(10, 12, 16, 0.65);
             --card-border: rgba(255, 255, 255, 0.08);
+            --focus-glow: rgba(0, 240, 255, 0.3);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            user-select: none;
         }
 
         body {
@@ -32,19 +34,16 @@
             color: var(--text-main);
             font-family: 'Space Grotesk', sans-serif;
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
+            overflow-x: hidden;
             position: relative;
         }
 
         /* Mouse Tracker Glow */
         #cursor-glow {
             position: fixed;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(0, 240, 255, 0.05) 0%, transparent 70%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0, 240, 255, 0.08) 0%, transparent 60%);
             border-radius: 50%;
             pointer-events: none;
             transform: translate(-50%, -50%);
@@ -52,71 +51,94 @@
             transition: opacity 0.3s ease;
         }
 
-        /* Ambient Mesh Background */
+        /* Ambient Background */
         .ambient-mesh {
-            position: absolute;
+            position: fixed;
             top: -50%; left: -50%; right: -50%; bottom: -50%;
             width: 200%; height: 200%;
             background: 
-                radial-gradient(circle at 20% 30%, rgba(0, 128, 255, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.08) 0%, transparent 40%);
+                radial-gradient(circle at 30% 40%, rgba(0, 128, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 70% 60%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
             z-index: 1;
-            animation: breathe 15s ease-in-out infinite alternate;
+            animation: breathe 20s ease-in-out infinite alternate;
+            transition: opacity 2s ease;
+        }
+
+        .ambient-mesh.brighten {
+            opacity: 1.5;
+            background: 
+                radial-gradient(circle at 30% 40%, rgba(0, 128, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 70% 60%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
         }
 
         @keyframes breathe {
             0% { transform: scale(1) rotate(0deg); }
-            100% { transform: scale(1.1) rotate(5deg); }
+            100% { transform: scale(1.1) rotate(3deg); }
         }
 
-        /* Scanning lines */
-        .scanlines {
+        /* Particles */
+        #particles {
             position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1));
-            background-size: 100% 4px;
-            z-index: 999;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 3;
             pointer-events: none;
-            opacity: 0.15;
         }
 
-        /* Main Glass Card */
-        .glass-card {
+        /* Container Layout */
+        .app-container {
             position: relative;
             z-index: 10;
             width: 100%;
-            max-width: 480px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        /* Central Glass Card */
+        .glass-card {
+            width: 100%;
+            max-width: 500px;
             background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
             border: 1px solid var(--card-border);
             border-radius: 24px;
-            padding: 3rem 2.5rem;
+            padding: 3.5rem 3rem;
             display: flex;
             flex-direction: column;
             align-items: center;
             box-shadow: 
-                0 25px 50px -12px rgba(0, 0, 0, 0.5),
+                0 30px 60px -15px rgba(0, 0, 0, 0.6),
                 inset 0 1px 1px rgba(255, 255, 255, 0.1),
-                inset 0 -1px 20px rgba(0, 240, 255, 0.05);
-            animation: cardEnter 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            opacity: 0;
-            transform: translateY(20px) scale(0.98);
-            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+                inset 0 -1px 20px rgba(0, 240, 255, 0.03);
+            transition: all 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+            position: relative;
+            overflow: hidden;
         }
 
-        @keyframes cardEnter {
-            to { opacity: 1; transform: translateY(0) scale(1); }
+        .glass-card.expanded {
+            max-width: 900px;
+            padding: 4rem 3rem;
         }
 
+        /* Logo Animation */
         .logo-container {
             position: relative;
-            width: 80px;
-            height: 80px;
-            margin-bottom: 2rem;
+            width: 85px;
+            height: 85px;
+            margin-bottom: 2.5rem;
             display: flex;
             justify-content: center;
             align-items: center;
+            transition: all 1s ease;
+        }
+        
+        .expanded .logo-container {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 1.5rem;
         }
 
         .logo-glow {
@@ -126,44 +148,49 @@
             background: var(--primary);
             border-radius: 50%;
             filter: blur(25px);
-            opacity: 0.4;
-            animation: logoBreathe 3s ease-in-out infinite alternate;
+            opacity: 0.3;
+            animation: logoBreathe 4s ease-in-out infinite alternate;
         }
 
         @keyframes logoBreathe {
-            0% { transform: scale(0.8); opacity: 0.2; }
-            100% { transform: scale(1.2); opacity: 0.5; }
+            0% { transform: scale(0.9); opacity: 0.2; }
+            100% { transform: scale(1.1); opacity: 0.4; }
         }
 
         .logo {
-            width: 70px;
-            height: 70px;
+            width: 100%;
+            height: 100%;
             object-fit: contain;
             border-radius: 50%;
             position: relative;
             z-index: 2;
         }
 
-        .title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            margin-bottom: 0.25rem;
-            background: linear-gradient(135deg, #fff 0%, #b0c4de 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        /* --- LOADING UI --- */
+        .loader-ui {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: opacity 0.5s ease;
         }
 
-        .subtitle {
-            font-size: 0.9rem;
-            color: var(--primary);
-            font-weight: 400;
-            letter-spacing: 1px;
+        .loader-ui.hidden {
+            opacity: 0;
+            pointer-events: none;
+            position: absolute;
+            visibility: hidden;
+        }
+
+        .loader-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            letter-spacing: 2px;
             margin-bottom: 2rem;
+            color: var(--text-main);
             text-transform: uppercase;
         }
 
-        /* Refined Progress Bar */
         .progress-wrapper {
             width: 100%;
             margin-bottom: 2rem;
@@ -175,7 +202,7 @@
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.75rem;
             color: var(--text-muted);
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
 
         .progress-track {
@@ -192,7 +219,7 @@
             width: 0%;
             background: linear-gradient(90deg, var(--accent), var(--primary));
             border-radius: 4px;
-            box-shadow: 0 0 10px var(--primary-dim);
+            box-shadow: 0 0 12px var(--primary-dim);
             position: relative;
             transition: width 0.1s ease;
         }
@@ -201,27 +228,20 @@
             content: '';
             position: absolute;
             top: 0; right: 0; bottom: 0;
-            width: 20px;
+            width: 30px;
             background: #fff;
-            filter: blur(5px);
-            opacity: 0.8;
+            filter: blur(6px);
+            opacity: 0.9;
             animation: streak 2s linear infinite;
         }
 
-        @keyframes streak {
-            0% { transform: translateX(-100px); opacity: 0; }
-            50% { opacity: 1; }
-            100% { transform: translateX(20px); opacity: 0; }
-        }
-
-        /* AI System Logs */
         .logs-container {
             width: 100%;
             height: 60px;
             position: relative;
             overflow: hidden;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: var(--text-muted);
             text-align: center;
         }
@@ -234,91 +254,282 @@
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .log-line.active {
+        .log-line.active { opacity: 1; transform: translateY(0); }
+        .log-line.exit { opacity: 0; transform: translateY(-10px); }
+
+
+        /* --- MAIN HERO UI --- */
+        .hero-ui {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            position: absolute;
+            transform: scale(0.95);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+            transition-delay: 0.2s;
+            text-align: center;
+        }
+
+        .hero-ui.visible {
+            opacity: 1;
+            visibility: visible;
+            position: relative;
+            transform: scale(1);
+        }
+
+        .brand-text {
+            font-size: 0.85rem;
+            color: var(--primary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .main-headline {
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .sub-headline {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+            max-width: 650px;
+            margin-bottom: 2rem;
+        }
+
+        .secondary-text {
+            font-size: 0.9rem;
+            color: rgba(148, 163, 184, 0.7);
+            margin-bottom: 3rem;
+            font-style: italic;
+        }
+
+        .cta-button {
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid rgba(0, 240, 255, 0.4);
+            color: var(--primary);
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .cta-button:hover {
+            background: var(--primary);
+            color: var(--bg-dark);
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+
+        /* --- FORM UI --- */
+        .form-ui {
+            width: 100%;
+            display: none; /* Initially hidden */
+            flex-direction: column;
+            gap: 1.5rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            text-align: left;
+        }
+
+        .form-ui.visible {
+            display: flex;
             opacity: 1;
             transform: translateY(0);
         }
-        
-        .log-line.exit {
-            opacity: 0;
-            transform: translateY(-10px);
+
+        .form-header {
+            margin-bottom: 1rem;
+            text-align: center;
         }
 
-        /* Canvas */
-        #particles {
+        .form-header h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .input-group {
+            position: relative;
+            width: 100%;
+        }
+
+        .input-field {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.2rem 1rem 0.6rem 1rem;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1rem;
+            color: #fff;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        textarea.input-field {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .floating-label {
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 3;
+            top: 1.2rem;
+            left: 1rem;
+            color: var(--text-muted);
+            font-size: 1rem;
             pointer-events: none;
+            transition: all 0.3s ease;
+            transform-origin: left top;
         }
 
-        /* Expand Transition */
-        .glass-card.expanded {
-            max-width: 100vw;
-            height: 100vh;
-            border-radius: 0;
-            border: none;
+        .input-field:focus, 
+        .input-field:not(:placeholder-shown) {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(0, 240, 255, 0.5);
+            box-shadow: 0 0 15px var(--focus-glow);
+        }
+
+        .input-field:focus + .floating-label,
+        .input-field:not(:placeholder-shown) + .floating-label {
+            transform: translateY(-0.8rem) scale(0.75);
+            color: var(--primary);
+        }
+
+        .select-field {
+            padding: 1rem;
+            appearance: none;
+            cursor: pointer;
+        }
+        
+        .select-field option {
             background: var(--bg-dark);
-            backdrop-filter: none;
-            -webkit-backdrop-filter: none;
-            justify-content: center;
+            color: #fff;
         }
 
-        .glass-card.expanded .logo-container,
-        .glass-card.expanded .title,
-        .glass-card.expanded .subtitle,
-        .glass-card.expanded .progress-wrapper,
-        .glass-card.expanded .logs-container {
-            opacity: 0;
-            transition: opacity 0.5s ease;
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--primary));
+            border: none;
+            color: #fff;
+            padding: 1.2rem;
+            border-radius: 12px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            box-shadow: 0 10px 20px rgba(0, 240, 255, 0.2);
         }
+
+        .submit-btn:hover {
+            box-shadow: 0 10px 30px rgba(0, 240, 255, 0.4);
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .main-headline { font-size: 2.5rem; }
+            .glass-card { padding: 2.5rem 1.5rem; }
+            .glass-card.expanded { padding: 3rem 1.5rem; }
+        }
+
     </style>
 </head>
 <body>
-    <div class="ambient-mesh"></div>
+    <div class="ambient-mesh" id="mesh"></div>
     <div id="particles"></div>
-    <div class="scanlines"></div>
     <div id="cursor-glow"></div>
 
-    <div class="glass-card" id="main-card">
-        <div class="logo-container">
-            <div class="logo-glow"></div>
-            <img src="logo.png" alt="AIML Club Logo" class="logo" onerror="this.src='https://via.placeholder.com/70/0a0a0c/00f0ff?text=AI'">
-        </div>
-        
-        <h1 class="title">AIML Voice</h1>
-        <div class="subtitle">Innovation Portal</div>
-
-        <div class="progress-wrapper">
-            <div class="progress-header">
-                <span>SYSTEM_STATUS</span>
-                <span id="percent">0%</span>
+    <div class="app-container">
+        <div class="glass-card" id="main-card">
+            
+            <div class="logo-container">
+                <div class="logo-glow"></div>
+                <img src="logo.png" alt="AIML Club Logo" class="logo" onerror="this.src='https://via.placeholder.com/85/050508/00f0ff?text=AI'">
             </div>
-            <div class="progress-track">
-                <div class="progress-fill" id="p-bar"></div>
-            </div>
-        </div>
+            
+            <!-- LOADING SEQUENCE -->
+            <div class="loader-ui" id="loader-ui">
+                <div class="loader-title">System Handshake</div>
+                
+                <div class="progress-wrapper">
+                    <div class="progress-header">
+                        <span>NETWORK_LINK</span>
+                        <span id="percent">0%</span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" id="p-bar"></div>
+                    </div>
+                </div>
 
-        <div class="logs-container" id="logs">
-            <!-- Logs injected via JS -->
+                <div class="logs-container" id="logs">
+                    <!-- Logs injected via JS -->
+                </div>
+            </div>
+
+            <!-- HERO SECTION -->
+            <div class="hero-ui" id="hero-ui">
+                <div class="brand-text">AI & Machine Learning Club – OCT</div>
+                <h1 class="main-headline">Your Voice Matters</h1>
+                <p class="sub-headline">Every idea can create impact. Share your thoughts, feedback, workshop interests, event concepts, and innovative suggestions with the AIML ecosystem.</p>
+                
+                <p class="secondary-text" id="redirect-status" style="margin-top: 2rem; color: var(--primary);">Redirecting to Nexus...</p>
+            </div>
+
         </div>
     </div>
 
     <script>
-        // --- 1. Mouse Reactive Glow ---
+        // --- Cursor Glow ---
         const cursorGlow = document.getElementById('cursor-glow');
         document.addEventListener('mousemove', (e) => {
             cursorGlow.style.left = e.clientX + 'px';
             cursorGlow.style.top = e.clientY + 'px';
         });
 
-        // --- 2. Subtle Neural Particles ---
+        // --- Neural Particles ---
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         document.getElementById('particles').appendChild(canvas);
         
         let width, height, particles = [];
-        
         function resize() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
@@ -330,10 +541,9 @@
             constructor() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 0.2; // Slower, elegant movement
-                this.vy = (Math.random() - 0.5) * 0.2;
-                this.radius = Math.random() * 1;
-                this.alpha = Math.random() * 0.5 + 0.1;
+                this.vx = (Math.random() - 0.5) * 0.15;
+                this.vy = (Math.random() - 0.5) * 0.15;
+                this.radius = Math.random() * 1.2;
             }
             update() {
                 this.x += this.vx;
@@ -344,30 +554,27 @@
             draw() {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.fillStyle = `rgba(255, 255, 255, 0.4)`;
                 ctx.fill();
             }
         }
 
-        for(let i=0; i<40; i++) particles.push(new Particle()); // Reduced count for minimal look
+        for(let i=0; i<45; i++) particles.push(new Particle());
 
         function animateParticles() {
             ctx.clearRect(0, 0, width, height);
-            
             for(let i = 0; i < particles.length; i++) {
                 particles[i].update();
                 particles[i].draw();
-                
                 for(let j = i + 1; j < particles.length; j++) {
                     const dx = particles[i].x - particles[j].x;
                     const dy = particles[i].y - particles[j].y;
                     const dist = Math.sqrt(dx*dx + dy*dy);
-                    
-                    if(dist < 120) { // Connect nodes
+                    if(dist < 150) {
                         ctx.beginPath();
                         ctx.moveTo(particles[i].x, particles[i].y);
                         ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.strokeStyle = `rgba(0, 240, 255, ${0.1 - dist/1200})`;
+                        ctx.strokeStyle = `rgba(0, 240, 255, ${0.08 - dist/1800})`;
                         ctx.lineWidth = 0.5;
                         ctx.stroke();
                     }
@@ -377,47 +584,45 @@
         }
         animateParticles();
 
-        // --- 3. AI System Logs & Progress ---
+        // --- Loading Sequence ---
         const messages = [
-            "Initializing neural interface...",
+            "Initializing AIML Voice...",
+            "Connecting student innovation network...",
             "Authenticating student node...",
-            "Syncing innovation channels...",
-            "Connecting to AIML Voice...",
-            "Establishing secure collaboration layer...",
-            "Voice gateway established."
+            "Syncing collaborative intelligence...",
+            "Establishing secure voice channel...",
+            "Innovation portal ready."
         ];
 
         const logsContainer = document.getElementById('logs');
         const pBar = document.getElementById('p-bar');
         const percentText = document.getElementById('percent');
         const card = document.getElementById('main-card');
+        const loaderUi = document.getElementById('loader-ui');
+        const heroUi = document.getElementById('hero-ui');
+        const mesh = document.getElementById('mesh');
         
         let currentMsg = 0;
-        let progress = 0;
-        const totalDuration = 4500; // 4.5 seconds to load
+        const totalDuration = 3000; // Fast 3s loading
         const startTime = Date.now();
 
-        // Setup log elements
         const logElements = messages.map(msg => {
             const el = document.createElement('div');
             el.className = 'log-line';
-            el.textContent = msg;
+            el.textContent = `> ${msg}`;
             logsContainer.appendChild(el);
             return el;
         });
 
         function updateLoader() {
             const elapsed = Date.now() - startTime;
-            progress = Math.min(100, (elapsed / totalDuration) * 100);
-            
-            // Ease out cubic logic for smooth bar progress
+            let progress = Math.min(100, (elapsed / totalDuration) * 100);
             const easeProgress = 1 - Math.pow(1 - (progress/100), 3);
             const currentPercent = Math.round(easeProgress * 100);
             
             pBar.style.width = `${currentPercent}%`;
             percentText.textContent = `${currentPercent}%`;
 
-            // Update Logs based on progress
             const msgIndex = Math.floor((progress / 100) * messages.length);
             if (msgIndex !== currentMsg && msgIndex < messages.length) {
                 if(logElements[currentMsg]) logElements[currentMsg].className = 'log-line exit';
@@ -435,24 +640,28 @@
         }
 
         function completeLoading() {
-            // Cinematic Transition Unlock
             if(logElements[currentMsg]) logElements[currentMsg].className = 'log-line exit';
             
-            const unlockMsg = document.createElement('div');
-            unlockMsg.className = 'log-line active';
-            unlockMsg.style.color = 'var(--primary)';
-            unlockMsg.textContent = "ACCESS GRANTED";
-            logsContainer.appendChild(unlockMsg);
-
             setTimeout(() => {
-                // Expand card to fade out
-                card.classList.add('expanded');
+                // Hide Loader
+                loaderUi.classList.add('hidden');
                 
-                // Finally redirect to Tally form
+                // Expand Card & Brighten Background
+                card.classList.add('expanded');
+                mesh.classList.add('brighten');
+                
+                // Show Hero UI
                 setTimeout(() => {
-                    window.location.replace("https://tally.so/r/RGbkdj");
-                }, 800);
-            }, 600);
+                    heroUi.classList.add('visible');
+                    
+                    // Trigger actual redirect after a brief moment to read the Hero text
+                    setTimeout(() => {
+                        window.location.replace("https://tally.so/r/RGbkdj");
+                    }, 1500);
+
+                }, 500);
+
+            }, 400);
         }
 
         requestAnimationFrame(updateLoader);
