@@ -13,13 +13,12 @@
         :root {
             --bg-dark: #030406;
             --primary: #00e5ff;
-            --primary-dim: rgba(0, 229, 255, 0.3);
+            --primary-dim: rgba(0, 229, 255, 0.15);
             --accent: #6366f1;
-            --accent-dim: rgba(99, 102, 241, 0.3);
             --text-main: #ffffff;
             --text-muted: #94a3b8;
             --text-dim: #64748b;
-            --card-bg: rgba(12, 14, 20, 0.5);
+            --card-bg: rgba(12, 14, 20, 0.6);
             --card-border: rgba(255, 255, 255, 0.08);
         }
 
@@ -42,54 +41,41 @@
             perspective: 1000px;
         }
 
-        /* Cinematic Background Elements */
+        /* Performance Optimized Background Elements (No filter: blur) */
         .orb {
             position: fixed;
             border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.4;
             z-index: 1;
-            animation: float 20s ease-in-out infinite alternate;
+            animation: float 25s ease-in-out infinite alternate;
+            opacity: 0.8;
+            pointer-events: none;
         }
 
         .orb-1 {
-            width: 400px; height: 400px;
-            background: var(--primary-dim);
-            top: -10%; left: -10%;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(0, 229, 255, 0.07) 0%, transparent 70%);
+            top: -15%; left: -15%;
         }
 
         .orb-2 {
-            width: 500px; height: 500px;
-            background: var(--accent-dim);
-            bottom: -20%; right: -10%;
+            width: 700px; height: 700px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.07) 0%, transparent 70%);
+            bottom: -20%; right: -15%;
             animation-delay: -5s;
         }
 
         @keyframes float {
             0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(100px, 50px) scale(1.2); }
+            100% { transform: translate(60px, 30px) scale(1.1); }
         }
 
-        /* Mouse Tracker Glow */
-        #cursor-glow {
-            position: fixed;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(0, 229, 255, 0.04) 0%, transparent 60%);
-            border-radius: 50%;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            z-index: 2;
-            transition: opacity 0.3s ease;
-        }
-
-        /* Particles */
+        /* Lightweight Particles */
         #particles {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: 3;
             pointer-events: none;
-            opacity: 0.8;
+            opacity: 0.6; /* Reduced opacity for subtlety */
         }
 
         /* Container & Card */
@@ -97,7 +83,7 @@
             position: relative;
             z-index: 10;
             width: 100%;
-            padding: 2rem;
+            padding: 1.5rem; /* Better mobile padding */
             display: flex;
             justify-content: center;
             transform-style: preserve-3d;
@@ -105,87 +91,54 @@
 
         .glass-card {
             width: 100%;
-            max-width: 480px;
+            max-width: 460px; /* Slimmer for better read */
             background: var(--card-bg);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
+            /* Reduced blur for better thermals */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--card-border);
             border-radius: 24px;
-            padding: 3.5rem 3rem;
+            padding: 3rem 2.5rem;
             display: flex;
             flex-direction: column;
             align-items: center;
             box-shadow: 
-                0 30px 60px -10px rgba(0, 0, 0, 0.8),
-                inset 0 1px 1px rgba(255, 255, 255, 0.1),
-                inset 0 -1px 20px rgba(0, 229, 255, 0.03);
-            transition: max-width 1.2s cubic-bezier(0.2, 0.8, 0.2, 1), 
-                        padding 1.2s cubic-bezier(0.2, 0.8, 0.2, 1),
-                        transform 0.1s ease-out; /* 3D tilt */
+                0 20px 40px -10px rgba(0, 0, 0, 0.6),
+                inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            transition: max-width 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), 
+                        padding 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
             position: relative;
             overflow: hidden;
-            transform: translateZ(0);
-        }
-
-        .glass-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 50%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.03), transparent);
-            transform: skewX(-20deg);
-            animation: shine 6s infinite;
-        }
-
-        @keyframes shine {
-            0% { left: -100%; }
-            20% { left: 200%; }
-            100% { left: 200%; }
+            will-change: transform;
         }
 
         .glass-card.expanded {
-            max-width: 750px;
-            padding: 4rem 4rem;
+            max-width: 700px;
+            padding: 3.5rem 3.5rem;
         }
 
         .glass-card.exit {
-            transform: scale(0.95) translateY(20px) !important;
+            transform: scale(0.92) translateY(15px) !important;
             opacity: 0;
-            transition: all 0.8s cubic-bezier(0.8, 0, 0.2, 1) !important;
+            transition: all 0.6s cubic-bezier(0.8, 0, 0.2, 1) !important;
         }
 
-        /* Logo Animation */
+        /* Logo */
         .logo-container {
             position: relative;
-            width: 80px;
-            height: 80px;
-            margin-bottom: 2.5rem;
+            width: 75px;
+            height: 75px;
+            margin-bottom: 2rem;
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
         
         .expanded .logo-container {
-            width: 65px;
-            height: 65px;
-            margin-bottom: 2rem;
-        }
-
-        .logo-glow {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: var(--primary);
-            border-radius: 50%;
-            filter: blur(20px);
-            opacity: 0.2;
-            animation: breatheLogo 4s ease-in-out infinite alternate;
-        }
-
-        @keyframes breatheLogo {
-            0% { transform: scale(1); opacity: 0.15; }
-            100% { transform: scale(1.1); opacity: 0.25; }
+            width: 60px;
+            height: 60px;
+            margin-bottom: 1.5rem;
         }
 
         .logo {
@@ -195,6 +148,13 @@
             border-radius: 50%;
             position: relative;
             z-index: 2;
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.2);
+            animation: logoBreathe 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes logoBreathe {
+            0% { transform: scale(1); box-shadow: 0 0 20px rgba(0, 229, 255, 0.2); }
+            100% { transform: scale(1.08); box-shadow: 0 0 35px rgba(0, 229, 255, 0.5); }
         }
 
         /* --- LOADING UI --- */
@@ -203,7 +163,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            transition: opacity 0.6s ease, transform 0.6s ease;
+            transition: opacity 0.5s ease, transform 0.5s ease;
         }
 
         .loader-ui.hidden {
@@ -216,8 +176,8 @@
 
         .loader-title {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.3rem;
-            font-weight: 400;
+            font-size: 1.25rem;
+            font-weight: 500;
             letter-spacing: 0.5px;
             margin-bottom: 2rem;
             color: var(--text-main);
@@ -225,7 +185,7 @@
 
         .progress-wrapper {
             width: 100%;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
 
         .progress-header {
@@ -236,7 +196,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             color: var(--text-dim);
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .progress-track {
@@ -252,24 +212,8 @@
             height: 100%;
             width: 0%;
             background: linear-gradient(90deg, var(--accent), var(--primary));
-            box-shadow: 0 0 12px var(--primary-dim);
             transition: width 0.1s ease;
             position: relative;
-        }
-
-        .progress-fill::after {
-            content: '';
-            position: absolute;
-            top: 0; right: 0; bottom: 0; width: 20px;
-            background: #fff;
-            filter: blur(4px);
-            opacity: 0.8;
-            animation: sweep 1.5s linear infinite;
-        }
-
-        @keyframes sweep {
-            0% { transform: translateX(-100px); }
-            100% { transform: translateX(20px); }
         }
 
         .logs-container {
@@ -278,7 +222,7 @@
             position: relative;
             overflow: hidden;
             font-size: 0.95rem;
-            font-weight: 300;
+            font-weight: 400;
             color: var(--text-muted);
             text-align: center;
         }
@@ -305,8 +249,8 @@
             visibility: hidden;
             position: absolute;
             transform: translateY(15px);
-            transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
-            transition-delay: 0.2s;
+            transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transition-delay: 0.1s;
             text-align: center;
         }
 
@@ -317,23 +261,28 @@
             transform: translateY(0);
         }
 
-        .brand-text {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
+        /* Highlighted Club Name Badge */
+        .club-badge {
+            background: linear-gradient(90deg, rgba(0, 229, 255, 0.1), rgba(99, 102, 241, 0.1));
+            border: 1px solid rgba(0, 229, 255, 0.2);
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
             color: var(--primary);
-            letter-spacing: 2px;
-            text-transform: uppercase;
+            letter-spacing: 0.5px;
             margin-bottom: 1.5rem;
-            opacity: 0.9;
+            box-shadow: 0 4px 15px rgba(0, 229, 255, 0.1);
         }
 
         .main-headline {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 3.5rem;
-            font-weight: 600;
-            letter-spacing: -1.5px;
+            font-size: 3.2rem;
+            font-weight: 700;
+            letter-spacing: -1px;
             line-height: 1.1;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -342,39 +291,46 @@
         .sub-headline {
             font-size: 1.1rem;
             font-weight: 400;
-            line-height: 1.6;
+            line-height: 1.5;
             color: #e2e8f0;
-            max-width: 600px;
-            margin-bottom: 1.5rem;
+            max-width: 500px;
+            margin-bottom: 1.2rem;
         }
 
         .description-text {
             font-size: 0.95rem;
             font-weight: 300;
-            line-height: 1.7;
+            line-height: 1.6;
             color: var(--text-muted);
-            max-width: 580px;
-            margin-bottom: 3rem;
+            max-width: 550px;
+            margin-bottom: 2.5rem;
         }
 
         .cta-button {
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(0, 229, 255, 0.4);
             color: var(--text-main);
-            padding: 1.1rem 2.8rem;
+            padding: 1rem 2.5rem;
             border-radius: 100px;
             font-family: 'Inter', sans-serif;
             font-size: 1.05rem;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             text-decoration: none;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            animation: buttonPulse 3s infinite;
+        }
+
+        @keyframes buttonPulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 229, 255, 0.3); }
+            70% { box-shadow: 0 0 0 15px rgba(0, 229, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 229, 255, 0); }
         }
 
         .cta-button::before {
@@ -383,14 +339,37 @@
             top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(90deg, var(--accent), var(--primary));
             opacity: 0;
-            transition: opacity 0.4s ease;
-            z-index: -1;
+            transition: opacity 0.3s ease;
+            z-index: 0;
+        }
+
+        /* Shine effect passing over the button */
+        .cta-button::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transform: skewX(-20deg);
+            animation: buttonShine 4s infinite;
+            z-index: 2;
+        }
+
+        @keyframes buttonShine {
+            0% { left: -100%; }
+            15% { left: 200%; }
+            100% { left: 200%; }
+        }
+
+        .cta-button span {
+            position: relative;
+            z-index: 1;
         }
 
         .cta-button:hover {
             border-color: transparent;
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(0, 229, 255, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 229, 255, 0.2);
         }
 
         .cta-button:hover::before {
@@ -398,18 +377,24 @@
         }
 
         .closing-text {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--text-dim);
-            margin-top: 2.5rem;
-            max-width: 450px;
-            line-height: 1.6;
+            margin-top: 2rem;
+            max-width: 400px;
+            line-height: 1.5;
         }
 
         /* Responsive */
         @media (max-width: 600px) {
-            .main-headline { font-size: 2.8rem; }
-            .glass-card { padding: 2.5rem 1.5rem; }
+            .app-container { padding: 1rem; }
+            .glass-card { padding: 2.5rem 1.5rem; border-radius: 20px; }
             .glass-card.expanded { padding: 3rem 1.5rem; }
+            .main-headline { font-size: 2.4rem; }
+            .sub-headline { font-size: 1rem; }
+            .description-text { font-size: 0.9rem; margin-bottom: 2rem; }
+            .club-badge { font-size: 0.75rem; padding: 0.4rem 1rem; }
+            .logo-container { width: 65px; height: 65px; margin-bottom: 1.5rem; }
+            .expanded .logo-container { width: 55px; height: 55px; }
         }
     </style>
 </head>
@@ -417,13 +402,11 @@
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
     <div id="particles"></div>
-    <div id="cursor-glow"></div>
 
     <div class="app-container">
         <div class="glass-card" id="main-card">
             
             <div class="logo-container">
-                <div class="logo-glow"></div>
                 <img src="logo.png" alt="AIML Club Logo" class="logo" onerror="this.src='https://via.placeholder.com/85/030406/00e5ff?text=AI'">
             </div>
             
@@ -448,7 +431,7 @@
 
             <!-- HERO SECTION -->
             <div class="hero-ui" id="hero-ui">
-                <div class="brand-text">Innovate • Implement • Inspire</div>
+                <div class="club-badge">AI & Machine Learning Club - OCT</div>
                 
                 <h1 class="main-headline">Your Voice Matters</h1>
                 
@@ -457,11 +440,11 @@
                 </p>
                 
                 <p class="description-text">
-                    Share your ideas, feedback, workshop interests, event concepts, and innovative thoughts with the AI & Machine Learning Club – OCT.
+                    Share your ideas, feedback, workshop interests, event concepts, and innovative thoughts to shape the future of our community.
                 </p>
                 
                 <a href="https://tally.so/r/RGbkdj" class="cta-button" id="cta-btn">
-                    <span style="position: relative; z-index: 2;">✨ Share Your Voice</span>
+                    <span>✨ Share Your Voice</span>
                 </a>
                 
                 <p class="closing-text">
@@ -473,23 +456,31 @@
     </div>
 
     <script>
-        // --- 3D Hover Effect ---
+        // --- Optimized 3D Hover Effect (Only on Desktop) ---
         const card = document.getElementById('main-card');
-        document.addEventListener('mousemove', (e) => {
-            if (!card.classList.contains('expanded')) return; // Apply mainly to hero
-            const xAxis = (window.innerWidth / 2 - e.pageX) / 50;
-            const yAxis = (window.innerHeight / 2 - e.pageY) / 50;
-            card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
-        });
+        const isMobile = window.matchMedia("(max-width: 768px)").matches;
+        
+        if (!isMobile) {
+            let ticking = false;
+            document.addEventListener('mousemove', (e) => {
+                if (!card.classList.contains('expanded') || ticking) return;
+                window.requestAnimationFrame(() => {
+                    const xAxis = (window.innerWidth / 2 - e.pageX) / 60;
+                    const yAxis = (window.innerHeight / 2 - e.pageY) / 60;
+                    card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+                    ticking = false;
+                });
+                ticking = true;
+            });
+            
+            // Reset transform on mouse leave
+            document.addEventListener('mouseleave', () => {
+                card.style.transform = `rotateY(0deg) rotateX(0deg)`;
+            });
+        }
 
-        // --- Cursor Glow ---
-        const cursorGlow = document.getElementById('cursor-glow');
-        document.addEventListener('mousemove', (e) => {
-            cursorGlow.style.left = e.clientX + 'px';
-            cursorGlow.style.top = e.clientY + 'px';
-        });
-
-        // --- Soft Dust Particles ---
+        // --- Performance Optimized Particles ---
+        // Reduced particle count and simplified math for better thermals
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         document.getElementById('particles').appendChild(canvas);
@@ -502,20 +493,25 @@
         window.addEventListener('resize', resize);
         resize();
 
+        // Only 25 particles to keep CPU usage extremely low
+        const particleCount = isMobile ? 15 : 25; 
+
         class Particle {
             constructor() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 0.15;
-                this.vy = (Math.random() - 0.5) * 0.15;
-                this.radius = Math.random() * 2;
+                this.vx = (Math.random() - 0.5) * 0.1;
+                this.vy = (Math.random() - 0.5) * 0.1;
+                this.radius = Math.random() * 1.5;
                 this.alpha = Math.random() * 0.3 + 0.1;
             }
             update() {
                 this.x += this.vx;
                 this.y += this.vy;
-                if(this.x < 0 || this.x > width) this.vx = -this.vx;
-                if(this.y < 0 || this.y > height) this.vy = -this.vy;
+                if(this.x < 0) this.x = width;
+                if(this.x > width) this.x = 0;
+                if(this.y < 0) this.y = height;
+                if(this.y > height) this.y = 0;
             }
             draw() {
                 ctx.beginPath();
@@ -525,7 +521,7 @@
             }
         }
 
-        for(let i=0; i<60; i++) particles.push(new Particle());
+        for(let i=0; i<particleCount; i++) particles.push(new Particle());
 
         function animateParticles() {
             ctx.clearRect(0, 0, width, height);
@@ -553,7 +549,7 @@
         const heroUi = document.getElementById('hero-ui');
         
         let currentMsg = 0;
-        const totalDuration = 3000; // 3 seconds loading
+        const totalDuration = 2500; // Faster 2.5 seconds loading to respect user time
         const startTime = Date.now();
 
         const logElements = messages.map(msg => {
@@ -603,9 +599,9 @@
                 // Reveal Hero UI
                 setTimeout(() => {
                     heroUi.classList.add('visible');
-                }, 600);
+                }, 400);
 
-            }, 400);
+            }, 300);
         }
 
         requestAnimationFrame(updateLoader);
@@ -621,7 +617,7 @@
             // Wait for animation to complete before redirecting
             setTimeout(() => {
                 window.location.href = ctaBtn.getAttribute('href');
-            }, 800);
+            }, 600);
         });
 
     </script>
