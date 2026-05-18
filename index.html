@@ -28,17 +28,23 @@
             padding: 0;
         }
 
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* Strictly prevent all scrolling */
+        }
+
         body {
             background-color: var(--bg-dark);
             color: var(--text-main);
             font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-            overflow: hidden;
-            position: relative;
+            position: fixed;
+            inset: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             perspective: 1000px;
+            height: 100dvh; /* Support for modern mobile viewports */
         }
 
         /* Performance Optimized Background Elements (No filter: blur) */
@@ -261,6 +267,16 @@
             transform: translateY(0);
         }
 
+        .brand-text {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--primary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
         /* Highlighted Club Name Badge */
         .club-badge {
             background: linear-gradient(90deg, rgba(0, 229, 255, 0.1), rgba(99, 102, 241, 0.1));
@@ -432,6 +448,8 @@
             <!-- HERO SECTION -->
             <div class="hero-ui" id="hero-ui">
                 <div class="club-badge">AI & Machine Learning Club - OCT</div>
+                
+                <div class="brand-text">Innovate. Implement. Inspire.</div>
                 
                 <h1 class="main-headline">Your Voice Matters</h1>
                 
